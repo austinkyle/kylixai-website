@@ -31,8 +31,8 @@ git push -u origin main
 4. Select the `kylixai-website` repository
 5. Configure build settings:
    - **Framework preset**: None (static site)
-   - **Build command**: _(leave blank — no build step)_
-   - **Build output directory**: `build/src` (or `/` if index.html is at root)
+   - **Build command**: `bash deploy-build.sh`
+   - **Build output directory**: `dist`
 6. Click **Save and Deploy**
 7. Wait for the first deployment — Cloudflare provides a `*.pages.dev` URL to preview
 
@@ -60,12 +60,24 @@ git push -u origin main
 
 ---
 
-## Step 4: Environment Variables (if needed)
+## Step 4: Environment Variables (REQUIRED — do this before first deploy)
+
+The build script (`deploy-build.sh`) substitutes `__WEB3FORMS_KEY__` and `__CALENDAR_URL__`
+placeholders in the output HTML. Keys never touch the Git repo.
 
 1. In Cloudflare Pages -> your project -> **Settings** -> **Environment Variables**
-2. Add any variables from `.env.example` that are needed at runtime
-   - Note: For a static HTML site, variables are typically only used during build time
-   - Web3Forms access key goes DIRECTLY in the HTML (it's a public key by design)
+2. Add these two variables (Production + Preview environments):
+
+   | Variable name          | Value                              |
+   |------------------------|------------------------------------|
+   | `WEB3FORMS_ACCESS_KEY` | your Web3Forms key from `.env`     |
+   | `CALENDAR_BOOKING_URL` | your Calendly URL from `.env`      |
+
+3. Click **Save**, then re-trigger the deployment so the build picks up the new vars.
+
+Note: the Web3Forms key will appear in the live HTML page source (that's unavoidable for
+a client-side form — it's public by design). What this setup prevents is the key being
+committed to your Git repository.
 
 ---
 

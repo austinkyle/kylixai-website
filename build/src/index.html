@@ -36,7 +36,10 @@
 
   <title>KylixAI — Get Your Business Back</title>
 
-  <!-- Fonts: Clash Display (display) + Satoshi (body) via Fontshare -->
+  <!-- Fonts: Plus Jakarta Sans (hero headline) + Clash Display (display) + Satoshi (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Space+Grotesk:wght@300;400&display=swap" />
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" />
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500&display=swap" />
@@ -63,23 +66,110 @@
     <!-- ─── 1. HERO — The Hook ──────────────────────────────── -->
     <section class="section section-hero" aria-labelledby="hero-headline">
       <div class="container hero__inner">
-        <span class="hero__badge" aria-label="Free audit, zero risk">Free audit — zero risk</span>
+        <span class="hero__badge" aria-label="It doesn't have to be this way">It doesn't have to be this way</span>
 
         <h1 class="hero__headline" id="hero-headline">
-          Your business should<br>run without you.
+          Imagine waking up to a business<br>
+          that <em class="hero__hl-accent">runs without you.</em>
         </h1>
 
         <p class="hero__sub">
-          You built something real. But somewhere along the way, it started running you.
-          The admin, the follow-ups, the tasks you've done a hundred times —
-          it doesn't have to be this way.
+          Invoices that send themselves. Leads followed up before they go cold.
+          Customers who feel cared for — while you sleep, walk your dog,
+          or finally take a real Saturday off.
         </p>
 
         <a class="cta-button cta-button--hero" href="#audit" aria-label="Book my free audit">
-          Book my free audit
+          Get my free audit
         </a>
 
         <p class="hero__reassurance">No cost until it's working. No obligation, ever.</p>
+
+        <!-- Automation flow diagram — visible at desktop -->
+        <div class="hero__visual" aria-hidden="true">
+          <svg class="flow-diagram" viewBox="0 0 440 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="hubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="#FF4F1F"/>
+                <stop offset="100%" stop-color="#FF7349"/>
+              </linearGradient>
+              <filter id="glow-accent" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            <!-- Connecting paths (hub = 220,200) -->
+            <path class="flow-path" d="M220,200 C200,160 140,120 110,90"/>
+            <path class="flow-path" d="M220,200 C240,160 300,120 330,90"/>
+            <path class="flow-path" d="M220,200 C180,200 120,210  80,220"/>
+            <path class="flow-path" d="M220,200 C260,200 320,210 360,220"/>
+            <path class="flow-path" d="M220,200 C220,240 220,290 220,320"/>
+
+            <!-- Animated particles -->
+            <circle class="flow-particle" r="3.5">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="0s"
+                path="M220,200 C200,160 140,120 110,90"/>
+            </circle>
+            <circle class="flow-particle" r="3.5">
+              <animateMotion dur="3.2s" repeatCount="indefinite" begin="0.5s"
+                path="M220,200 C240,160 300,120 330,90"/>
+            </circle>
+            <circle class="flow-particle" r="3.5">
+              <animateMotion dur="2.6s" repeatCount="indefinite" begin="1.0s"
+                path="M220,200 C180,200 120,210 80,220"/>
+            </circle>
+            <circle class="flow-particle" r="3.5">
+              <animateMotion dur="3.0s" repeatCount="indefinite" begin="0.3s"
+                path="M220,200 C260,200 320,210 360,220"/>
+            </circle>
+            <circle class="flow-particle" r="3.5">
+              <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s"
+                path="M220,200 C220,240 220,290 220,320"/>
+            </circle>
+
+            <!-- Card: Invoice Reminders (top-left) -->
+            <g class="flow-card" transform="translate(40,52)">
+              <rect class="flow-card-bg" x="0" y="0" width="126" height="52" rx="10"/>
+              <text class="flow-card-label" x="63" y="16">AUTOMATE</text>
+              <text class="flow-card-title" x="63" y="34">Invoice Reminders</text>
+            </g>
+
+            <!-- Card: Client Scheduling (top-right) -->
+            <g class="flow-card" transform="translate(274,52)">
+              <rect class="flow-card-bg" x="0" y="0" width="126" height="52" rx="10"/>
+              <text class="flow-card-label" x="63" y="16">AUTOMATE</text>
+              <text class="flow-card-title" x="63" y="34">Client Scheduling</text>
+            </g>
+
+            <!-- Card: Lead Follow-up (mid-left) -->
+            <g class="flow-card" transform="translate(0,194)">
+              <rect class="flow-card-bg" x="0" y="0" width="116" height="52" rx="10"/>
+              <text class="flow-card-label" x="58" y="16">AUTOMATE</text>
+              <text class="flow-card-title" x="58" y="34">Lead Follow-up</text>
+            </g>
+
+            <!-- Card: Team Alerts (mid-right) -->
+            <g class="flow-card" transform="translate(324,194)">
+              <rect class="flow-card-bg" x="0" y="0" width="116" height="52" rx="10"/>
+              <text class="flow-card-label" x="58" y="16">AUTOMATE</text>
+              <text class="flow-card-title" x="58" y="34">Team Alerts</text>
+            </g>
+
+            <!-- Card: Data Entry (bottom-center) -->
+            <g class="flow-card" transform="translate(157,304)">
+              <rect class="flow-card-bg" x="0" y="0" width="126" height="52" rx="10"/>
+              <text class="flow-card-label" x="63" y="16">AUTOMATE</text>
+              <text class="flow-card-title" x="63" y="34">Data Entry</text>
+            </g>
+
+            <!-- Center hub -->
+            <g class="flow-hub" transform="translate(220,200)">
+              <rect class="flow-hub-bg" x="-52" y="-22" width="104" height="44" rx="22"/>
+              <text class="flow-hub-text" x="0" y="1">Automated</text>
+            </g>
+          </svg>
+        </div>
       </div>
     </section>
 
@@ -90,21 +180,27 @@
 
         <ul class="pain-grid" role="list">
           <li class="pain-card">
+            <span class="pain-card__icon" aria-hidden="true">🔁</span>
             You've explained the same task to three different people this month.
           </li>
           <li class="pain-card">
+            <span class="pain-card__icon" aria-hidden="true">💸</span>
             Chasing invoices is a part-time job you never signed up for.
           </li>
           <li class="pain-card">
+            <span class="pain-card__icon" aria-hidden="true">📊</span>
             You spent your Sunday updating spreadsheets instead of resting.
           </li>
           <li class="pain-card">
+            <span class="pain-card__icon" aria-hidden="true">🔔</span>
             New leads go cold because follow-up slipped through the cracks.
           </li>
           <li class="pain-card">
+            <span class="pain-card__icon" aria-hidden="true">🔒</span>
             You can't take a real day off — the moment you do, something breaks.
           </li>
           <li class="pain-card">
+            <span class="pain-card__icon" aria-hidden="true">🕊️</span>
             You started this business for freedom.<br>
             You're now working harder than anyone on your team.
           </li>
@@ -133,9 +229,12 @@
           <p>
             The repetitive work in your business isn't unique to you.
             It's a sequence of steps that never changes — and patterns can be automated.
-            Most business owners are losing 10 to 20 hours a week to tasks
-            a well-built system would handle overnight.
           </p>
+
+          <div class="reframe__stat">
+            <span class="reframe__stat-number">10–20 hrs</span>
+            <span class="reframe__stat-label">lost every week to tasks a well-built system would handle overnight</span>
+          </div>
 
           <p class="reframe__transition">
             We make it straightforward to find out exactly what that's worth to your business.
@@ -211,8 +310,11 @@
             </p>
           </blockquote>
           <figcaption class="founder-quote__attr">
-            <span class="founder-quote__name">Austin Kyle</span>
-            <span class="founder-quote__title">Founder, KylixAI</span>
+            <div class="founder-avatar" aria-hidden="true">AK</div>
+            <div class="founder-quote__meta">
+              <span class="founder-quote__name">Austin Kyle</span>
+              <span class="founder-quote__title">Founder, KylixAI</span>
+            </div>
           </figcaption>
         </figure>
 
@@ -248,7 +350,7 @@
             novalidate
             aria-label="Book your free audit"
           >
-            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+            <input type="hidden" name="access_key" value="061b3d95-a8f3-4154-967a-f9781baeb7c7" />
             <input type="hidden" name="subject" value="New Free Audit Request — KylixAI" />
             <input type="hidden" name="botcheck" />
 
@@ -277,6 +379,17 @@
             </div>
 
             <div class="form-group">
+              <label for="phone">Phone number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="(555) 555-5555"
+                autocomplete="tel"
+              />
+            </div>
+
+            <div class="form-group">
               <label for="business">What does your business do?</label>
               <input
                 type="text"
@@ -298,6 +411,9 @@
 
           <p class="cta__microcopy">No cost. No commitment. No AI jargon.</p>
 
+          <a class="cta__fallback" href="https://calendly.com/austin-kyle/meeting" target="_blank" rel="noopener noreferrer">
+            Or book directly on Calendly
+          </a>
           <a class="cta__fallback" href="mailto:hello@kylixai.com">
             Or email us at hello@kylixai.com
           </a>

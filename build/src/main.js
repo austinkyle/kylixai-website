@@ -9,7 +9,7 @@
   'use strict';
 
   /* ─── Register plugins ────────────────────────────────────── */
-  gsap.registerPlugin(ScrollTrigger, SplitText);
+  gsap.registerPlugin(ScrollTrigger);
 
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
@@ -18,37 +18,37 @@
   /* ─── Page-load orchestration ─────────────────────────────── */
 
   if (!prefersReducedMotion) {
-    /* Split hero headline into animatable words */
-    const heroHeadline = document.querySelector('.hero__headline');
-    if (heroHeadline) {
-      heroHeadline.style.overflow = 'hidden';
-      const heroSplit = new SplitText(heroHeadline, { type: 'words' });
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      tl
-        .from('.hero__badge', {
-          y: 16, opacity: 0, duration: 0.55, delay: 0.15
-        })
-        .from(heroSplit.words, {
-          y: '110%', opacity: 0,
-          duration: 0.65, stagger: 0.055, ease: 'expo.out'
-        }, '-=0.25')
-        .from('.hero__sub', {
-          y: 22, opacity: 0, duration: 0.60
-        }, '-=0.35')
-        .from('.cta-button--hero', {
-          scale: 0.88, opacity: 0,
-          duration: 0.65, ease: 'elastic.out(1, 0.5)'
-        }, '-=0.35')
-        .from('.hero__reassurance', {
-          opacity: 0, duration: 0.45
-        }, '-=0.30')
-        .from('.blob', {
-          opacity: 0, scale: 0.75,
-          duration: 1.6, stagger: 0.25, ease: 'power2.out'
-        }, 0.35);
-    }
+    tl
+      .from('.hero__badge', {
+        y: 16, opacity: 0, duration: 0.55, delay: 0.10
+      })
+      .from('.hero__headline', {
+        y: 40, opacity: 0, duration: 0.75, ease: 'expo.out'
+      }, '-=0.20')
+      .from('.hero__sub', {
+        y: 22, opacity: 0, duration: 0.60
+      }, '-=0.40')
+      .from('.cta-button--hero', {
+        scale: 0.88, opacity: 0,
+        duration: 0.65, ease: 'elastic.out(1, 0.5)'
+      }, '-=0.35')
+      .from('.hero__reassurance', {
+        opacity: 0, duration: 0.45
+      }, '-=0.30')
+      .from('.blob', {
+        opacity: 0, scale: 0.75,
+        duration: 1.6, stagger: 0.25, ease: 'power2.out'
+      }, 0.35)
+      .from('.flow-card', {
+        opacity: 0, scale: 0.80,
+        duration: 0.55, stagger: 0.10, ease: 'back.out(1.4)'
+      }, '-=1.0')
+      .from('.flow-hub', {
+        opacity: 0, scale: 0.60,
+        duration: 0.65, ease: 'elastic.out(1, 0.5)'
+      }, '-=0.30');
   }
 
   /* ─── ScrollTrigger — section reveals ─────────────────────── */

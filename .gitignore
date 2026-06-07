@@ -1,6 +1,9 @@
 # ─── Secrets ───────────────────────────────────────────────
 .env
 
+# ─── Build output (contains injected secrets) ──────────────
+dist/
+
 # ─── Staging / Temp ────────────────────────────────────────
 /temp/
 
