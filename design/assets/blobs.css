@@ -1,0 +1,92 @@
+/* blobs.css — Ambient glow blob decorations
+ * Reference snippet — actual implementation lives in build/src/main.css
+ * Uses token values from token-colors-v1.0.md
+ *
+ * Blobs are fixed-position, pointer-events:none, z-index below content.
+ * GSAP reveals and animates them (see spec-motion-v1.0.md).
+ * CSS keyframes handle the continuous ambient float after reveal.
+ */
+
+/* ─── Base blob styles ─────────────────────────────────────── */
+
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  z-index: -1;              /* --z-below */
+  pointer-events: none;
+  will-change: transform;   /* only on the primary blob per motion spec */
+  opacity: 0;               /* starts hidden — GSAP fades in on page load */
+}
+
+/* ─── Primary blob — electric tangerine, upper-left ────────── */
+
+.blob--primary {
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 79, 31, 0.28) 0%,
+    rgba(255, 144, 0, 0.12) 50%,
+    transparent 70%
+  );
+  top:  -80px;
+  left: -160px;
+  animation: blob-float-primary 9s ease-in-out infinite;
+}
+
+/* ─── Accent blob — electric cyan, upper-right ─────────────── */
+
+.blob--accent {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 234, 255, 0.20) 0%,
+    rgba(0, 234, 255, 0.06) 50%,
+    transparent 70%
+  );
+  top:   60px;
+  right: -120px;
+  animation: blob-float-accent 11s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* ─── Float keyframes ───────────────────────────────────────── */
+
+@keyframes blob-float-primary {
+  0%, 100% { transform: translate(0,    0   ) scale(1.00); }
+  33%       { transform: translate(30px, 20px) scale(1.04); }
+  66%       { transform: translate(-15px, 35px) scale(0.97); }
+}
+
+@keyframes blob-float-accent {
+  0%, 100% { transform: translate(0,     0   ) scale(1.00); }
+  40%       { transform: translate(-25px, 18px) scale(1.03); }
+  70%       { transform: translate(20px, -20px) scale(0.98); }
+}
+
+/* ─── Mobile: reduce blob size to avoid overflow ────────────── */
+
+@media (max-width: 640px) {
+  .blob--primary {
+    width:  380px;
+    height: 380px;
+    top:  -60px;
+    left: -100px;
+  }
+  .blob--accent {
+    width:  300px;
+    height: 300px;
+    top:    40px;
+    right:  -80px;
+  }
+}
+
+/* ─── Reduced motion: disable float, keep opacity reveal ────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+  }
+}

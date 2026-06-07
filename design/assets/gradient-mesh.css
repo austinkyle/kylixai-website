@@ -1,0 +1,40 @@
+/* gradient-mesh.css — Layered radial gradient mesh background
+ * Reference snippet — actual implementation lives in build/src/main.css
+ * Uses token values from token-colors-v1.0.md
+ *
+ * Usage: apply to body or a full-bleed section element.
+ * The mesh layers sit beneath all content via z-index.
+ */
+
+.mesh-background {
+  background-color: #0D0B14;  /* --color-surface-base */
+  background-image:
+    /* Blob 1 — electric tangerine, lower-left */
+    radial-gradient(
+      ellipse 70% 60% at 12% 65%,
+      rgba(255, 79, 31, 0.30) 0%,
+      transparent 55%
+    ),
+    /* Blob 2 — electric cyan, upper-right */
+    radial-gradient(
+      ellipse 60% 55% at 88% 12%,
+      rgba(0, 234, 255, 0.20) 0%,
+      transparent 52%
+    );
+  background-attachment: fixed; /* parallax-like depth as user scrolls */
+}
+
+/* Alternative: CSS-variable form for use inside :root-aware stylesheets */
+.mesh-background-vars {
+  background-color: var(--color-surface-base);
+  background-image:
+    var(--gradient-mesh-1),
+    var(--gradient-mesh-2);
+  background-attachment: fixed;
+}
+
+/* Animated version — subtle drift, use on hero sections only */
+@keyframes mesh-drift-1 {
+  0%, 100% { background-position: 12% 65%, 88% 12%; }
+  50%       { background-position: 16% 60%, 84% 18%; }
+}
