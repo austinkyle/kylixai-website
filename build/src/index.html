@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Meta Tags -->
-  <meta name="description" content="KylixAI gives small business owners their time back. Book a free 15-minute automation audit — no prep needed, no obligations." />
+  <meta name="description" content="KylixAI gives small business owners their time back. Book a free automation audit — no prep needed, no obligations." />
   <meta name="author" content="KylixAI" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://kylixai.com" />
@@ -14,7 +14,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://kylixai.com" />
   <meta property="og:title" content="KylixAI — Get Your Business Back" />
-  <meta property="og:description" content="Free 15-minute audit for small business owners. We map your workflow, find where time and money is being lost, and build the automation." />
+  <meta property="og:description" content="Free audit for small business owners. We map your workflow, find where time and money is being lost, and build the automation." />
   <meta property="og:image" content="https://kylixai.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -24,11 +24,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://kylixai.com" />
   <meta name="twitter:title" content="KylixAI — Get Your Business Back" />
-  <meta name="twitter:description" content="Free 15-minute audit. We map your workflow and build the automation that gets your time back." />
+  <meta name="twitter:description" content="Free audit. We map your workflow and build the automation that gets your time back." />
   <meta name="twitter:image" content="https://kylixai.com/og-image.png" />
 
-  <!-- Theme color -->
-  <meta name="theme-color" content="#FF4F1F" />
+  <meta name="theme-color" content="#F0EAD6" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -36,173 +35,241 @@
 
   <title>KylixAI — Get Your Business Back</title>
 
-  <!-- Fonts: Plus Jakarta Sans (hero headline) + Clash Display (display) + Satoshi (body) -->
+  <!-- Fonts: Playfair Display (display) + Lora (body) via Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Space+Grotesk:wght@300;400&display=swap" />
-  <link rel="preconnect" href="https://api.fontshare.com" />
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" />
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" />
 
-  <link rel="stylesheet" href="main.css?v=2" />
+  <link rel="stylesheet" href="main.css?v=3" />
 </head>
 <body>
 
-  <!-- Ambient grain overlay -->
+  <!-- Grain overlay -->
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- Ambient blob decorations -->
-  <div class="blob blob--primary" aria-hidden="true"></div>
-  <div class="blob blob--accent"  aria-hidden="true"></div>
+  <!-- Illustration sprite -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 
-  <!-- ─── Navigation ─────────────────────────────────────────── -->
+    <!-- Alarm clock -->
+    <symbol id="illus-alarm-clock" viewBox="0 0 100 100">
+      <path d="M50,15 C68,14 83,27 83,46 C83,65 69,79 51,79 C33,80 19,67 18,49 C17,31 32,16 50,15 Z"
+            fill="#E8DEC5" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round"/>
+      <line x1="50" y1="47" x2="50" y2="29" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="47" x2="64" y2="54" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="50" cy="47" r="3" fill="#6B5540"/>
+      <path d="M29,27 C24,20 22,13 25,8" stroke="#6B5540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M71,27 C76,20 78,13 75,8" stroke="#6B5540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="24" cy="7" r="4" fill="#FF4F1F" stroke="#6B5540" stroke-width="1.5"/>
+      <circle cx="76" cy="7" r="4" fill="#FF4F1F" stroke="#6B5540" stroke-width="1.5"/>
+      <path d="M35,79 C33,85 29,89 27,91" stroke="#6B5540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M65,79 C67,85 71,89 73,91" stroke="#6B5540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <line x1="50" y1="16" x2="50" y2="21" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="19" y1="48" x2="24" y2="48" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="78" y1="48" x2="83" y2="48" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Invoice / paper sheet -->
+    <symbol id="illus-invoice" viewBox="0 0 100 100">
+      <path d="M14,8 L74,7 L87,20 L88,93 L13,94 Z"
+            fill="#F8F4EC" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M74,7 L74,20 L87,20" fill="#E8DEC5" stroke="#6B5540" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="22" y1="32" x2="62" y2="31" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+      <line x1="22" y1="43" x2="72" y2="42" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+      <line x1="22" y1="54" x2="58" y2="53" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+      <line x1="22" y1="65" x2="68" y2="64" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+      <line x1="56" y1="76" x2="79" y2="75" stroke="#FF4F1F" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Coffee cup -->
+    <symbol id="illus-coffee-cup" viewBox="0 0 100 100">
+      <path d="M20,38 L23,80 C23,84 27,87 31,87 L63,87 C67,87 71,84 72,80 L76,38 Z"
+            fill="#E8DEC5" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M18,37 C20,33 28,30 48,30 C68,30 76,33 78,37"
+            fill="none" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M76,50 C89,49 93,58 93,64 C93,72 87,76 76,75"
+            fill="none" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M35,26 C37,20 34,16 36,11" fill="none" stroke="#6B5540" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+      <path d="M48,23 C50,17 47,13 49,8" fill="none" stroke="#6B5540" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+      <path d="M61,26 C63,20 60,16 62,11" fill="none" stroke="#6B5540" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    </symbol>
+
+    <!-- Tangled phone cord -->
+    <symbol id="illus-phone-cord" viewBox="0 0 100 100">
+      <rect x="8" y="10" width="14" height="9" rx="2" fill="#E8DEC5" stroke="#6B5540" stroke-width="2"/>
+      <path d="M15,19 C15,28 22,28 22,38 C22,48 12,48 12,58 C12,68 22,68 28,62
+               C34,56 28,46 38,42 C48,38 58,48 58,58 C58,68 48,72 50,80 C52,88 62,88 70,84
+               C78,80 80,72 80,72"
+            fill="none" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="80" cy="76" r="5" fill="#E8DEC5" stroke="#6B5540" stroke-width="2"/>
+    </symbol>
+
+    <!-- Sticky note -->
+    <symbol id="illus-sticky-note" viewBox="0 0 100 100">
+      <path d="M10,10 L90,11 L91,90 L9,91 Z"
+            fill="#FF4F1F" stroke="#6B5540" stroke-width="2" stroke-linejoin="round" opacity="0.88"/>
+      <line x1="20" y1="32" x2="80" y2="33" stroke="#F8F4EC" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="20" y1="48" x2="75" y2="49" stroke="#F8F4EC" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="20" y1="64" x2="78" y2="65" stroke="#F8F4EC" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+    </symbol>
+
+    <!-- Calendar page -->
+    <symbol id="illus-calendar" viewBox="0 0 100 100">
+      <path d="M9,22 L91,21 L93,93 L7,94 Z"
+            fill="#E8DEC5" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M9,22 L91,21 L91,40 L9,41 Z" fill="#5C8C4E" stroke="none"/>
+      <circle cx="30" cy="17" r="5" fill="#F0EAD6" stroke="#6B5540" stroke-width="2"/>
+      <circle cx="70" cy="17" r="5" fill="#F0EAD6" stroke="#6B5540" stroke-width="2"/>
+      <line x1="30" y1="10" x2="30" y2="22" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="70" y1="10" x2="70" y2="22" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="32" y1="53" x2="32" y2="87" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
+      <line x1="52" y1="53" x2="52" y2="87" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
+      <line x1="72" y1="53" x2="72" y2="87" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
+      <line x1="12" y1="60" x2="88" y2="60" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
+      <line x1="12" y1="73" x2="88" y2="73" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
+      <line x1="12" y1="86" x2="88" y2="86" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
+      <line x1="56" y1="74" x2="68" y2="86" stroke="#FF4F1F" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="68" y1="74" x2="56" y2="86" stroke="#FF4F1F" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Gear -->
+    <symbol id="illus-gear" viewBox="0 0 100 100">
+      <path d="M42,8 L48,8 L52,16 C57,15 62,16 67,18 L73,12 L78,17 L74,24
+               C78,29 81,35 82,41 L91,43 L91,50 L82,53
+               C81,59 78,65 74,70 L78,77 L73,82 L66,78
+               C61,81 56,83 50,84 L48,93 L42,93 L40,84
+               C34,83 29,81 24,78 L17,82 L12,77 L16,70
+               C12,65 9,59 8,53 L-1,51 L-1,43 L8,41
+               C9,35 12,29 16,24 L12,17 L17,12 L24,18
+               C29,16 34,15 40,16 Z"
+            fill="#E8DEC5" stroke="#6B5540" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="45" cy="48" r="17" fill="#F0EAD6" stroke="#6B5540" stroke-width="2.5"/>
+      <circle cx="45" cy="48" r="6" fill="#6B5540"/>
+    </symbol>
+
+    <!-- Envelope -->
+    <symbol id="illus-envelope" viewBox="0 0 100 100">
+      <path d="M8,25 L92,24 L93,78 L7,79 Z"
+            fill="#F8F4EC" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M8,25 L50,56 L92,24"
+            fill="none" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M8,79 L38,52" fill="none" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M92,79 L62,52" fill="none" stroke="#6B5540" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    </symbol>
+
+    <!-- Dog leash — tangled (trapped state) -->
+    <symbol id="illus-dog-leash-tangled" viewBox="0 0 100 100">
+      <path d="M85,15 C85,15 80,10 75,12 C70,14 70,20 72,26
+               C74,32 80,34 76,40 C72,46 62,44 58,50
+               C54,56 58,64 52,68 C46,72 38,68 34,72
+               C30,76 32,84 28,88 C24,92 18,90 15,87"
+            fill="none" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="86" cy="14" r="6" fill="#E8DEC5" stroke="#6B5540" stroke-width="2"/>
+      <circle cx="14" cy="87" r="6" fill="#E8DEC5" stroke="#6B5540" stroke-width="2"/>
+      <path d="M56,58 C58,54 64,54 62,60 C60,66 66,66 64,58"
+            fill="none" stroke="#6B5540" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Dog leash — free (resolved state) -->
+    <symbol id="illus-dog-leash-free" viewBox="0 0 100 100">
+      <path d="M20,85 C30,80 40,70 50,60 C60,50 70,35 80,15"
+            fill="none" stroke="#5C8C4E" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="80" cy="14" r="6" fill="#E8DEC5" stroke="#5C8C4E" stroke-width="2"/>
+      <circle cx="20" cy="86" r="7" fill="#E8DEC5" stroke="#5C8C4E" stroke-width="2"/>
+      <path d="M14,86 C14,82 26,82 26,86 C26,90 14,90 14,86 Z"
+            fill="none" stroke="#5C8C4E" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Checkmark stamp -->
+    <symbol id="illus-checkmark" viewBox="0 0 100 100">
+      <circle cx="50" cy="52" r="36" fill="#E8DEC5" stroke="#6B5540" stroke-width="2.5"/>
+      <path d="M30,52 C36,60 42,68 48,72 C54,58 66,36 76,28"
+            fill="none" stroke="#5C8C4E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="20" y="10" width="60" height="14" rx="3" fill="#6B5540" opacity="0.12"/>
+      <path d="M20,10 L80,10 L80,18 L20,18 Z" fill="#6B5540" opacity="0.08"/>
+    </symbol>
+
+  </svg>
+
+  <!-- Corner navigation -->
   <nav class="nav" id="nav" role="navigation" aria-label="Main">
     <a class="nav__wordmark" href="#top" aria-label="KylixAI — return to top">KylixAI</a>
     <a class="nav__cta" href="#audit">Book free audit</a>
   </nav>
 
+  <!-- Mobile persistent CTA -->
+  <a class="mobile-cta" href="#audit" aria-label="Book your free audit">Book free audit</a>
+
   <main id="top">
 
-    <!-- ─── 1. HERO — The Hook ──────────────────────────────── -->
+    <!-- ─── 1. HERO ─────────────────────────────────────────────── -->
     <section class="section section-hero" aria-labelledby="hero-headline">
+
+      <div class="illus-obj layer-back" id="hero-alarm" style="top:10%;left:3%;transform:rotate(-8deg)" aria-hidden="true">
+        <svg width="110" height="110"><use href="#illus-alarm-clock"/></svg>
+      </div>
+      <div class="illus-obj layer-mid" id="hero-invoice" style="top:5%;right:4%;transform:rotate(12deg)" aria-hidden="true">
+        <svg width="90" height="90"><use href="#illus-invoice"/></svg>
+      </div>
+      <div class="illus-obj layer-back" id="hero-cord" style="bottom:14%;left:1%;transform:rotate(5deg)" aria-hidden="true">
+        <svg width="100" height="100"><use href="#illus-phone-cord"/></svg>
+      </div>
+      <div class="illus-obj layer-front" id="hero-coffee" style="bottom:18%;right:4%;transform:rotate(-4deg)" aria-hidden="true">
+        <svg width="80" height="80"><use href="#illus-coffee-cup"/></svg>
+      </div>
+      <div class="illus-obj layer-mid" id="hero-sticky" style="top:42%;right:6%;transform:rotate(-15deg);opacity:0.7" aria-hidden="true">
+        <svg width="65" height="65"><use href="#illus-sticky-note"/></svg>
+      </div>
+
       <div class="container hero__inner">
-        <span class="hero__badge" aria-label="It doesn't have to be this way">It doesn't have to be this way</span>
+        <span class="hero__badge" aria-label="Free audit — zero risk">Free audit — zero risk</span>
 
         <h1 class="hero__headline" id="hero-headline">
-          Imagine waking up to a business<br>
-          that <em class="hero__hl-accent">runs without you.</em>
+          Your business should<br>
+          run without you.
         </h1>
 
         <p class="hero__sub">
-          Invoices that send themselves. Leads followed up before they go cold.
-          Customers who feel cared for — while you sleep, walk your dog,
-          or finally take a real Saturday off.
+          You built something real. But somewhere along the way, it started running you.
+          The admin, the follow-ups, the tasks you've done a hundred times —
+          it doesn't have to be this way.
         </p>
 
-        <a class="cta-button cta-button--hero" href="#audit" aria-label="Book my free audit">
-          Get my free audit
+        <a class="cta-button" href="#audit" aria-label="Book my free audit">
+          Book my free audit
         </a>
 
-
-        <!-- Automation flow diagram — visible at desktop -->
-        <div class="hero__visual" aria-hidden="true">
-          <svg class="flow-diagram" viewBox="0 0 440 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="hubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%"   stop-color="#FF4F1F"/>
-                <stop offset="100%" stop-color="#FF7349"/>
-              </linearGradient>
-              <filter id="glow-accent" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <!-- Connecting paths (hub = 220,200) -->
-            <path class="flow-path" d="M220,200 C200,160 140,120 110,90"/>
-            <path class="flow-path" d="M220,200 C240,160 300,120 330,90"/>
-            <path class="flow-path" d="M220,200 C180,200 120,210  80,220"/>
-            <path class="flow-path" d="M220,200 C260,200 320,210 360,220"/>
-            <path class="flow-path" d="M220,200 C220,240 220,290 220,320"/>
-
-            <!-- Animated particles -->
-            <circle class="flow-particle" r="3.5">
-              <animateMotion dur="2.8s" repeatCount="indefinite" begin="0s"
-                path="M220,200 C200,160 140,120 110,90"/>
-            </circle>
-            <circle class="flow-particle" r="3.5">
-              <animateMotion dur="3.2s" repeatCount="indefinite" begin="0.5s"
-                path="M220,200 C240,160 300,120 330,90"/>
-            </circle>
-            <circle class="flow-particle" r="3.5">
-              <animateMotion dur="2.6s" repeatCount="indefinite" begin="1.0s"
-                path="M220,200 C180,200 120,210 80,220"/>
-            </circle>
-            <circle class="flow-particle" r="3.5">
-              <animateMotion dur="3.0s" repeatCount="indefinite" begin="0.3s"
-                path="M220,200 C260,200 320,210 360,220"/>
-            </circle>
-            <circle class="flow-particle" r="3.5">
-              <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s"
-                path="M220,200 C220,240 220,290 220,320"/>
-            </circle>
-
-            <!-- Card: Invoice Reminders (top-left) -->
-            <g class="flow-card" transform="translate(40,52)">
-              <rect class="flow-card-bg" x="0" y="0" width="126" height="52" rx="10"/>
-              <text class="flow-card-label" x="63" y="16">AUTOMATE</text>
-              <text class="flow-card-title" x="63" y="34">Invoice Reminders</text>
-            </g>
-
-            <!-- Card: Client Scheduling (top-right) -->
-            <g class="flow-card" transform="translate(274,52)">
-              <rect class="flow-card-bg" x="0" y="0" width="126" height="52" rx="10"/>
-              <text class="flow-card-label" x="63" y="16">AUTOMATE</text>
-              <text class="flow-card-title" x="63" y="34">Client Scheduling</text>
-            </g>
-
-            <!-- Card: Lead Follow-up (mid-left) -->
-            <g class="flow-card" transform="translate(0,194)">
-              <rect class="flow-card-bg" x="0" y="0" width="116" height="52" rx="10"/>
-              <text class="flow-card-label" x="58" y="16">AUTOMATE</text>
-              <text class="flow-card-title" x="58" y="34">Lead Follow-up</text>
-            </g>
-
-            <!-- Card: Team Alerts (mid-right) -->
-            <g class="flow-card" transform="translate(324,194)">
-              <rect class="flow-card-bg" x="0" y="0" width="116" height="52" rx="10"/>
-              <text class="flow-card-label" x="58" y="16">AUTOMATE</text>
-              <text class="flow-card-title" x="58" y="34">Team Alerts</text>
-            </g>
-
-            <!-- Card: Data Entry (bottom-center) -->
-            <g class="flow-card" transform="translate(157,304)">
-              <rect class="flow-card-bg" x="0" y="0" width="126" height="52" rx="10"/>
-              <text class="flow-card-label" x="63" y="16">AUTOMATE</text>
-              <text class="flow-card-title" x="63" y="34">Data Entry</text>
-            </g>
-
-            <!-- Center hub -->
-            <g class="flow-hub" transform="translate(220,200)">
-              <rect class="flow-hub-bg" x="-52" y="-22" width="104" height="44" rx="22"/>
-              <text class="flow-hub-text" x="0" y="1">Automated</text>
-            </g>
-          </svg>
-        </div>
+        <p class="hero__reassurance">No cost until it's working. No obligation, ever.</p>
       </div>
     </section>
 
-    <!-- ─── 2. RECOGNITION — The Pain ──────────────────────── -->
+    <!-- ─── 2. RECOGNITION ───────────────────────────────────────── -->
     <section class="section section-recognition" id="recognition" aria-labelledby="recognition-heading">
-      <div class="container">
-        <h2 id="recognition-heading">Sound familiar?</h2>
 
-        <ul class="pain-grid" role="list">
-          <li class="pain-card">
-            <span class="pain-card__icon" aria-hidden="true">🔁</span>
-            You've explained the same task to three different people this month.
-          </li>
-          <li class="pain-card">
-            <span class="pain-card__icon" aria-hidden="true">💸</span>
-            Chasing invoices is a part-time job you never signed up for.
-          </li>
-          <li class="pain-card">
-            <span class="pain-card__icon" aria-hidden="true">📊</span>
-            You spent your Sunday updating spreadsheets instead of resting.
-          </li>
-          <li class="pain-card">
-            <span class="pain-card__icon" aria-hidden="true">🔔</span>
-            New leads go cold because follow-up slipped through the cracks.
-          </li>
-          <li class="pain-card">
-            <span class="pain-card__icon" aria-hidden="true">🔒</span>
-            You can't take a real day off — the moment you do, something breaks.
-          </li>
-          <li class="pain-card">
-            <span class="pain-card__icon" aria-hidden="true">🕊️</span>
-            You started this business for freedom.<br>
-            You're now working harder than anyone on your team.
-          </li>
+      <div class="illus-obj layer-back" style="top:-3%;right:2%;transform:rotate(6deg)" aria-hidden="true">
+        <svg width="85" height="85"><use href="#illus-calendar"/></svg>
+      </div>
+      <div class="illus-obj layer-front recognition-gear" style="top:36%;right:-1%;transform:rotate(18deg)" aria-hidden="true">
+        <svg width="75" height="75"><use href="#illus-gear"/></svg>
+      </div>
+      <div class="illus-obj layer-back" style="bottom:3%;left:0%;transform:rotate(-8deg);opacity:0.7" aria-hidden="true">
+        <svg width="85" height="85"><use href="#illus-dog-leash-tangled"/></svg>
+      </div>
+
+      <div class="container">
+        <div class="recognition__head">
+          <h2 id="recognition-heading" class="section-heading">Sound familiar?</h2>
+          <div class="illus-obj layer-mid envelope-float" style="transform:rotate(-3deg)" aria-hidden="true">
+            <svg width="65" height="65"><use href="#illus-envelope"/></svg>
+          </div>
+        </div>
+
+        <ul class="pain-list" role="list">
+          <li class="pain-item">You've explained the same task to three different people this month.</li>
+          <li class="pain-item">Chasing invoices is a part-time job you never signed up for.</li>
+          <li class="pain-item">You spent your Sunday updating spreadsheets instead of resting.</li>
+          <li class="pain-item">New leads go cold because follow-up slipped through the cracks.</li>
+          <li class="pain-item">You can't take a real day off — the moment you do, something breaks.</li>
+          <li class="pain-item">You started this business for freedom.<br>You're now working harder than anyone on your team.</li>
         </ul>
 
         <p class="recognition__close">
@@ -212,8 +279,16 @@
       </div>
     </section>
 
-    <!-- ─── 3. REFRAME — Hope Enters ───────────────────────── -->
+    <!-- ─── 3. REFRAME ───────────────────────────────────────────── -->
     <section class="section section-reframe" id="reframe" aria-labelledby="reframe-heading">
+
+      <div class="illus-obj layer-mid" style="top:-4%;left:-1%;transform:rotate(-10deg);opacity:0.75" aria-hidden="true">
+        <svg width="85" height="85"><use href="#illus-invoice"/></svg>
+      </div>
+      <div class="illus-obj layer-back" style="bottom:4%;right:2%;transform:rotate(4deg);opacity:0.55" aria-hidden="true">
+        <svg width="75" height="75"><use href="#illus-coffee-cup"/></svg>
+      </div>
+
       <div class="container">
         <div class="reframe__inner">
           <h2 id="reframe-heading">What if your business<br>actually ran itself?</h2>
@@ -228,11 +303,13 @@
           <p>
             The repetitive work in your business isn't unique to you.
             It's a sequence of steps that never changes — and patterns can be automated.
+            Most business owners are losing 10 to 20 hours a week to tasks that a well-built
+            system would handle overnight.
           </p>
 
-          <div class="reframe__stat">
-            <span class="reframe__stat-number">10–20 hrs</span>
-            <span class="reframe__stat-label">lost every week to tasks a well-built system would handle overnight</span>
+          <div class="stat-callout" aria-label="10 to 20 hours lost every week">
+            <span class="stat-callout__number">10–20 hrs</span>
+            <span class="stat-callout__label">lost every week to tasks a system handles</span>
           </div>
 
           <p class="reframe__transition">
@@ -242,13 +319,34 @@
       </div>
     </section>
 
-    <!-- ─── 4. HOW IT WORKS ─────────────────────────────────── -->
+    <!-- ─── MARQUEE BAND ──────────────────────────────────────────── -->
+    <div class="marquee" aria-hidden="true" role="presentation">
+      <div class="marquee__track">
+        <span class="marquee__content">AUTOMATE: Invoice Reminders &nbsp;·&nbsp; Scheduling &nbsp;·&nbsp; Lead Follow-up &nbsp;·&nbsp; Appointment Booking &nbsp;·&nbsp; Team Alerts &nbsp;·&nbsp; Data Entry &nbsp;·&nbsp; Client Onboarding &nbsp;·&nbsp; Payment Reminders &nbsp;·&nbsp; &nbsp;</span>
+        <span class="marquee__content" aria-hidden="true">AUTOMATE: Invoice Reminders &nbsp;·&nbsp; Scheduling &nbsp;·&nbsp; Lead Follow-up &nbsp;·&nbsp; Appointment Booking &nbsp;·&nbsp; Team Alerts &nbsp;·&nbsp; Data Entry &nbsp;·&nbsp; Client Onboarding &nbsp;·&nbsp; Payment Reminders &nbsp;·&nbsp; &nbsp;</span>
+      </div>
+    </div>
+
+    <!-- ─── 4. HOW IT WORKS ──────────────────────────────────────── -->
     <section class="section section-how" id="how" aria-labelledby="how-heading">
+
+      <div class="illus-obj layer-back" style="top:-3%;left:2%;transform:rotate(-5deg);opacity:0.8" aria-hidden="true">
+        <svg width="70" height="70"><use href="#illus-sticky-note"/></svg>
+      </div>
+      <div class="illus-obj layer-back" style="top:-3%;right:3%;transform:rotate(9deg);opacity:0.8" aria-hidden="true">
+        <svg width="65" height="65"><use href="#illus-sticky-note"/></svg>
+      </div>
+      <div class="illus-obj layer-mid" style="top:52%;right:-2%;transform:rotate(8deg)" aria-hidden="true">
+        <svg width="80" height="80"><use href="#illus-checkmark"/></svg>
+      </div>
+
       <div class="container">
         <h2 id="how-heading">How it works</h2>
+        <p class="how__guarantee">You pay nothing until it's working and saving you money.</p>
+
         <ol class="steps" role="list">
-          <li class="step">
-            <span class="step__number" aria-hidden="true">01</span>
+          <li class="step step--1">
+            <div class="step__num step__num--green" aria-hidden="true">01</div>
             <h3 class="step__label">We find the waste.</h3>
             <p class="step__desc">
               We spend time with you to map exactly where the hours are going — yours
@@ -257,8 +355,8 @@
             </p>
           </li>
 
-          <li class="step">
-            <span class="step__number" aria-hidden="true">02</span>
+          <li class="step step--2">
+            <div class="step__num step__num--orange" aria-hidden="true">02</div>
             <h3 class="step__label">We show you the numbers.</h3>
             <p class="step__desc">
               You see exactly what these inefficiencies cost — in hours per week and
@@ -267,24 +365,27 @@
             </p>
           </li>
 
-          <li class="step">
-            <span class="step__number" aria-hidden="true">03</span>
+          <li class="step step--3">
+            <div class="step__num step__num--green" aria-hidden="true">03</div>
             <h3 class="step__label">We build it. You approve it.</h3>
             <p class="step__desc">
-              If you want to move forward, we build the system and you're live within days.
-              We do the heavy lifting — you review, approve, and own it.
+              If you want to move forward, we build the system. You only pay when it's
+              live, working, and demonstrably saving you time and money. That's our promise.
             </p>
           </li>
         </ol>
 
-        <p class="how__footer">
-          If we can't find real savings, we'll tell you that too.
-        </p>
+        <p class="how__footer">If we can't find real savings, we'll tell you that too.</p>
       </div>
     </section>
 
-    <!-- ─── 5. PROOF — Trust ────────────────────────────────── -->
+    <!-- ─── 5. PROOF ─────────────────────────────────────────────── -->
     <section class="section section-proof" id="proof" aria-labelledby="proof-heading">
+
+      <div class="illus-obj layer-back" style="bottom:6%;left:2%;transform:rotate(3deg);opacity:0.75" aria-hidden="true">
+        <svg width="75" height="75"><use href="#illus-envelope"/></svg>
+      </div>
+
       <div class="container">
         <h2 id="proof-heading">Why trust us?</h2>
 
@@ -304,53 +405,41 @@
             </p>
           </blockquote>
           <figcaption class="founder-quote__attr">
-            <div class="founder-avatar" aria-hidden="true">AK</div>
-            <div class="founder-quote__meta">
-              <span class="founder-quote__name">Austin Kyle</span>
-              <span class="founder-quote__title">Founder, KylixAI</span>
-            </div>
+            <span class="founder-quote__name">Austin Kyle</span>
+            <span class="founder-quote__title">Founder, KylixAI</span>
           </figcaption>
         </figure>
 
-        <figure class="case-study-card" aria-label="Client case study — Tri-State HVAC Services">
-          <div class="case-study-card__metrics">
-            <div class="case-study-metric">
-              <span class="case-study-metric__value">12 hrs</span>
-              <span class="case-study-metric__label">reclaimed per week</span>
-            </div>
-            <div class="case-study-metric">
-              <span class="case-study-metric__value">$8,400</span>
-              <span class="case-study-metric__label">recovered in month one</span>
-            </div>
-            <div class="case-study-metric">
-              <span class="case-study-metric__value">0</span>
-              <span class="case-study-metric__label">missed follow-ups since go-live</span>
-            </div>
-          </div>
-          <blockquote class="case-study-card__quote">
-            <p>"I was spending 12 hours a week on scheduling, invoicing, and chasing payments.
-            The KylixAI team mapped it all out in one conversation and built a system that
-            handles everything. First month after launch we collected $8,400 in invoices
-            I would've written off."</p>
-          </blockquote>
-          <figcaption class="case-study-card__attr">
-            <span class="case-study-card__name">Marcus T.</span>
-            <span class="case-study-card__biz">Business Owner</span>
-          </figcaption>
-        </figure>
+        <div class="testimonial-placeholder">
+          <p class="testimonial-placeholder__body">
+            We're working with our first clients right now. If you'd like to be among
+            them — and help shape what we build — this is your moment.
+          </p>
+          <span class="testimonial-placeholder__label">Results coming soon.</span>
+        </div>
       </div>
     </section>
 
-    <!-- ─── 6. CTA — The Invitation ────────────────────────── -->
+    <!-- ─── 6. CTA / FORM ────────────────────────────────────────── -->
     <section class="section section-cta" id="audit" aria-labelledby="cta-heading">
+
+      <div class="illus-obj layer-back" style="top:6%;right:5%;transform:rotate(10deg);opacity:0.45" aria-hidden="true">
+        <svg width="60" height="60"><use href="#illus-alarm-clock"/></svg>
+      </div>
+      <div class="illus-obj layer-mid" style="bottom:8%;right:4%;transform:rotate(-6deg)" aria-hidden="true">
+        <svg width="90" height="90"><use href="#illus-dog-leash-free"/></svg>
+      </div>
+
       <div class="container">
         <div class="cta__inner">
           <h2 id="cta-heading">Let's find your time back.</h2>
 
           <p class="cta__body">
-            The audit is a 15-minute conversation where we map your current workflow and
-            identify where time and money is being lost. No prep needed. Just you, us,
-            and honest conversation about what's holding your business back.
+            The audit is one conversation. Tell us what your business does,
+            and we'll identify where time is being lost.
+          </p>
+          <p class="cta__body">
+            If we can help, we'll show you the numbers. If we can't, we'll tell you.
           </p>
 
           <!-- Web3Forms lead capture -->
@@ -421,7 +510,7 @@
             <div id="form-result" class="form-result" aria-live="polite" hidden></div>
           </form>
 
-
+          <p class="cta__microcopy">No cost. No commitment. No AI jargon.</p>
 
           <a class="cta__fallback" href="mailto:hello@kylixai.com">
             Or email us at hello@kylixai.com
@@ -432,7 +521,7 @@
 
   </main>
 
-  <!-- ─── Footer ─────────────────────────────────────────────── -->
+  <!-- ─── Footer ─────────────────────────────────────────────────── -->
   <footer class="footer" role="contentinfo">
     <div class="container footer__inner">
       <a class="footer__wordmark" href="#top" aria-label="KylixAI">KylixAI</a>
@@ -451,6 +540,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
 
-  <script src="main.js"></script>
+  <script src="main.js?v=3"></script>
 </body>
 </html>
