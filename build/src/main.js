@@ -520,13 +520,19 @@
     const youEl = document.querySelector('.hero__you');
     if (youEl) {
       const maxTravel = Math.min(120, window.innerWidth * 0.3);
-      const youDur = 0.22;
       let youImpulseFired = false; // impulse is a once-per-page moment
 
+      /* "you." now sits centred on line 3 (a921c94 rewrap), with the
+         sub-copy directly beneath — the exit must rise more than it
+         drifts and be fully transparent by ≤0.15 of the scrub, or it
+         hangs as a half-faded ghost over the paragraph while scrolling.
+         The legs MUST NOT overlap: with overwrite:'auto' the second leg
+         kills the first on its first render, and reverse-scrubbing back
+         past that point then leaves "you." frozen mid-flight at scroll 0 */
       heroTl
         .to(youEl, {
-          x: maxTravel * 0.45, y: -42, rotation: 3,
-          ease: 'none', duration: youDur, overwrite: 'auto',
+          x: maxTravel * 0.35, y: -70, rotation: 3,
+          ease: 'none', duration: 0.06, overwrite: 'auto',
           onStart() {
             if (youImpulseFired) return;
             if (typeof window.__kylixFlowImpulse !== 'function') return;
@@ -541,10 +547,10 @@
           },
         }, 0)
         .to(youEl, {
-          x: maxTravel, y: -88, rotation: 6,
+          x: maxTravel * 0.7, y: -160, rotation: 6,
           autoAlpha: 0,
-          ease: 'none', duration: youDur, overwrite: 'auto',
-        }, youDur * 0.65);
+          ease: 'none', duration: 0.09, overwrite: 'auto',
+        }, 0.06);
     }
 
     /* ── Ink underline: inject SVG + wire into heroTl ── */
@@ -553,12 +559,15 @@
     function injectRunUnderline() {
       if (!heroSplit || !heroSplit.words) return null;
 
-      const runWithout = heroSplit.words.filter(w =>
-        /^(run|without)$/i.test(w.textContent.trim())
+      /* "run" only: since the three-line rewrap, "run" ends line 2 and
+         "without" ends line 3 further LEFT — spanning both produced a
+         negative-width path (a stray squiggle), not an underline */
+      const runWords = heroSplit.words.filter(w =>
+        /^run$/i.test(w.textContent.trim())
       );
-      if (runWithout.length < 2) return null;
+      if (!runWords.length) return null;
 
-      const geo = computeUnderlineGeometry(runWithout);
+      const geo = computeUnderlineGeometry(runWords);
       const d = geo.d, heroRect = geo.heroRect;
       const heroEl = document.querySelector('.section-hero');
 
@@ -621,11 +630,11 @@
        dispersal: chaos objects, "you." departure, background lift). */
     const refreshInjectHandler = () => {
       if (!ul || !heroSplit || !heroSplit.words) return;
-      const runWithout = heroSplit.words.filter(w =>
-        /^(run|without)$/i.test(w.textContent.trim())
+      const runWords = heroSplit.words.filter(w =>
+        /^run$/i.test(w.textContent.trim())
       );
-      if (runWithout.length < 2) return;
-      const geo = computeUnderlineGeometry(runWithout);
+      if (!runWords.length) return;
+      const geo = computeUnderlineGeometry(runWords);
       ul.svg.style.width  = geo.heroRect.width  + 'px';
       ul.svg.style.height = geo.heroRect.height + 'px';
       ul.path.setAttribute('d', geo.d);
