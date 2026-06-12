@@ -233,3 +233,23 @@ Spec values changed during the post-build review (see `design/review-log.md`):
 | `will-change` on ambient floats | onStart/onRepeat toggling | removed | ~15 perpetual loops exceeded the ≤6 budget |
 | Quote-mark idle drift | both marks | open mark only | Close mark lands and holds (Chanel rule) |
 | CSS transitions | default browser ease | `--ease-snap` cubic-bezier mirror of power3.out | One easing vocabulary across CSS + GSAP |
+
+---
+
+## Review 2 Amendments (The Current review, 2026-06-12)
+
+Laws learned the hard way — these are binding for all future motion work:
+
+| Rule | Why |
+|------|-----|
+| **Never `kill()` a child of a scrub-paused timeline.** Re-measure + `invalidate()` the persistent tween instead | GSAP gc's the whole timeline and silently destroys its ScrollTrigger — this had disabled the entire hero dispersal in production |
+| **SplitText needs explicit `charsClass`/`wordsClass`** when CSS or JS selects the pieces | SplitText adds no classes by default; `.char` selectors silently match nothing |
+| **SplitText on `<p>`: pass `aria: 'none'`** | v3.13 auto-aria writes `aria-label` onto elements where ARIA prohibits naming |
+| **fps watchdogs judge the measured span of continuous frames only** | Assumed-window math reads warm-up as ~2 fps; single stalls (tab switch, GC) are discontinuities, not low fps |
+| **`once: true` ScrollTriggers must not start in the already-triggered zone** | Mobile "you." (`top 70%`) fired at load — the word was never visible on phones |
+| **Ambient layers animate `transform` only** (L1 blobs moved from `background-position` to translate3d pseudo-layers) | Same interaction-physics law as hover — repaint loops are budget theft |
+
+The Current — shipped parameters: 520/220 particles (desktop/mobile), alpha 0.34,
+point 12/7.5 px × dpr, colours 60% ink-ghost / 39% ink-muted / 0.8% accent-1,
+degradation ladder 45/30/20 fps → 60% / 35%+round×0.6 / teardown. Diagnostics:
+`window.__kylixCurrentDebug`.

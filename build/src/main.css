@@ -258,21 +258,22 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .nav__wordmark {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  letter-spacing: 0.02em;
   text-decoration: none;
   color: var(--color-ink);
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1px;
+  align-items: center;
+  line-height: 1;
 }
 
-.nav__thread {
+.nav__logo-svg {
   display: block;
-  overflow: visible;
+  height: 34px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+@media (max-width: 400px) {
+  .nav__logo-svg { height: 26px; }
 }
 
 .nav--scrolled {
@@ -375,6 +376,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 /* ─── 8. HERO SECTION ───────────────────────────────────────────── */
 
 .section-hero {
+  position: relative;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -383,7 +385,26 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   padding-bottom: var(--space-8);
 }
 
+/* L4b — vignette fuses L1–L3 into one scene */
+.section-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 40%,
+    transparent 40%,
+    rgba(44, 31, 14, 0.18) 100%
+  );
+}
+
 .hero__inner {
+  /* Above the GL canvases (z 0/1) and the vignette (z 9): the field
+     flows BEHIND the words; the avoidance mask curves it around the
+     headline. Vignette must never darken type or the CTA. */
+  position: relative;
+  z-index: var(--z-content);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -454,6 +475,65 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: var(--text-sm);
   color: var(--color-ink-ghost);
   letter-spacing: var(--tracking-wide);
+}
+
+/* L1a — coded atmosphere: two brand-tinted blobs drifting at glacial
+   speed. Each blob is its own compositor layer moved with transform —
+   animating background-position repainted the whole hero every frame.
+   z-index 0 + last-in-DOM places the tint ABOVE the opaque L2 paper
+   canvas (alpha:false), so the atmosphere reads on desktop too. */
+@keyframes hero-blob-a {
+  from { transform: translate3d(-7%, -8%, 0); }
+  to   { transform: translate3d( 7%,  8%, 0); }
+}
+
+@keyframes hero-blob-b {
+  from { transform: translate3d( 8%,  6%, 0); }
+  to   { transform: translate3d(-7%, -6%, 0); }
+}
+
+.hero__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero__backdrop::before,
+.hero__backdrop::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.hero__backdrop::before {
+  width: 75%;
+  height: 60%;
+  left: 2%;
+  top: 10%;
+  background: radial-gradient(closest-side, rgba(255, 79, 31, 0.07), transparent);
+  animation: hero-blob-a 14s ease-in-out infinite alternate;
+}
+
+.hero__backdrop::after {
+  width: 58%;
+  height: 64%;
+  right: -4%;
+  bottom: 2%;
+  background: radial-gradient(closest-side, rgba(92, 140, 78, 0.05), transparent);
+  animation: hero-blob-b 14s ease-in-out infinite alternate;
+}
+
+/* L2 — Three.js current canvas, injected by initHeroCurrent() */
+.hero__current-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
 }
 
 
@@ -835,7 +915,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .founder-quote__title {
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  color: var(--color-ink-ghost);
+  color: var(--color-ink-muted); /* ink-ghost was 1.9:1 on ground — fails AA */
   letter-spacing: var(--tracking-wide);
 }
 
@@ -1029,7 +1109,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .footer__legal {
   font-family: var(--font-body);
   font-size: var(--text-xs);
-  color: var(--color-ink-ghost);
+  color: var(--color-ink-muted); /* ink-ghost was 1.7:1 on ground-deep — fails AA */
   letter-spacing: var(--tracking-wide);
 }
 
@@ -1141,6 +1221,17 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .step--3               { transform: rotate(-1.5deg) !important; }
   .recognition__close    { transform: rotate(-0.5deg) !important; }
   .testimonial-placeholder { transform: rotate(-0.8deg) !important; }
+
+  /* No particle field; the atmosphere stays as a STATIC tint (the
+     documented L1+L4 fallback composition) — only its drift stops */
+  .hero__current-canvas { display: none !important; }
+  .hero__backdrop::before,
+  .hero__backdrop::after { animation: none !important; }
+  #nav-logo-kylix, #nav-logo-ai, #nav-logo-node-k, #nav-logo-node-x {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #nav-logo-thread { stroke-dashoffset: 0 !important; }
 }
 
 

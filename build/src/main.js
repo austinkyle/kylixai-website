@@ -31,6 +31,10 @@
 
   const LAYER_SPEED = { back: 0.15, mid: 0.35, front: 0.55 };
 
+  /* ─── Shared hero pointer state (one source of truth for
+         initLivingType AND initHeroCurrent) ──────────────────── */
+  const heroPointer = window.__kylixHeroPointer = { x: -9999, y: -9999, active: false };
+
   let heroSplit = null;
 
   /* ─── Shared scroll velocity (px/s) ─────────────────────────────
@@ -127,12 +131,23 @@
   (function initPageLoad() {
     const headlineEl = document.querySelector('.hero__headline');
 
-    /* Nav thread — set draw state before timeline so it animates in */
-    const threadPath = document.querySelector('.nav__thread-path');
-    let threadLen = 0;
-    if (threadPath) {
-      threadLen = threadPath.getTotalLength();
-      gsap.set(threadPath, { strokeDasharray: threadLen, strokeDashoffset: threadLen });
+    /* Official logo — set all animated elements to FROM state before timeline */
+    const kylixGroup = document.getElementById('nav-logo-kylix');
+    const aiGroup    = document.getElementById('nav-logo-ai');
+    const nodeK      = document.getElementById('nav-logo-node-k');
+    const nodeX      = document.getElementById('nav-logo-node-x');
+    const logoThread = document.getElementById('nav-logo-thread');
+    let logoThreadLen = 0;
+    if (logoThread) {
+      logoThreadLen = logoThread.getTotalLength();
+      gsap.set(kylixGroup, { opacity: 0 });
+      gsap.set(aiGroup,    { opacity: 0 });
+      /* 50%/50% of each circle's own bbox = its exact centre. (px values
+         here are read relative to the bbox, not the viewBox, so the old
+         '15.19px 68.88px' scaled the nodes in from ~20px off-centre.) */
+      gsap.set(nodeK,      { scale: 0, transformOrigin: '50% 50%' });
+      gsap.set(nodeX,      { scale: 0, transformOrigin: '50% 50%' });
+      gsap.set(logoThread, { strokeDasharray: logoThreadLen, strokeDashoffset: logoThreadLen });
     }
 
     /* ── Character scatter setup ── */
@@ -144,7 +159,10 @@
       const headlineBox = headlineEl.getBoundingClientRect();
       headlineEl.style.minHeight = headlineBox.height + 'px';
 
-      heroSplit = new SplitText(headlineEl, { type: 'words,chars' });
+      /* charsClass is REQUIRED: SplitText adds no class by default, and
+         both the CSS .char rule and the Current's text-avoidance mask
+         select '.hero__headline .char' — without it the mask is empty */
+      heroSplit = new SplitText(headlineEl, { type: 'words,chars', charsClass: 'char' });
 
       heroSplit.chars.forEach(c => c.setAttribute('aria-hidden', 'true'));
       heroSplit.words.forEach(w => w.setAttribute('aria-hidden', 'true'));
@@ -212,6 +230,9 @@
             });
             headlineEl.style.minHeight = '';
             initLivingType(chars);
+            if (typeof window.__kylixUpdateTextMask === 'function') {
+              window.__kylixUpdateTextMask();
+            }
           },
         },
         '-=0.20'
@@ -234,25 +255,28 @@
       1.05
     );
 
-    /* Thread draws after assembly — chaos resolves, then the system activates */
-    if (threadPath) {
-      tl.to(threadPath, {
-        strokeDashoffset: 0,
-        duration: 0.85,
-        ease: EASE.settle,
-      }, 'assembled');
-    }
+    /* Logo signature animation — runs in parallel with character scatter */
+    if (logoThread && logoThreadLen > 0) {
+      /* Step 1: KYLIX letterforms fade in (0.1–0.5s) */
+      tl.to(kylixGroup, { opacity: 1, duration: 0.4, ease: EASE.settle }, 0.1);
+      /* Step 2: Thread draws L→R (0.4–1.1s) */
+      tl.to(logoThread, { strokeDashoffset: 0, duration: 0.7, ease: EASE.settle }, 0.4);
+      /* Step 3: K node pops as thread enters */
+      tl.to(nodeK, { scale: 1, duration: 0.35, ease: EASE.spring }, 0.5);
+      /* Step 4: X node pops as thread exits */
+      tl.to(nodeX, { scale: 1, duration: 0.35, ease: EASE.spring }, 1.0);
+      /* Step 5: AI letterforms fade in last */
+      tl.to(aiGroup, { opacity: 1, duration: 0.4, ease: EASE.settle }, 1.1);
 
-    /* After load: bind scroll velocity to thread dashoffset */
-    if (threadPath && threadLen > 0) {
+      /* After load: subtle scroll-velocity response on thread dashoffset */
       tl.eventCallback('onComplete', () => {
         let dashOffset = 0;
-        const maxShift = threadLen * 0.02;
+        const maxShift = logoThreadLen * 0.015;
         gsap.ticker.add(() => {
-          const target = gsap.utils.clamp(-maxShift, maxShift, scrollVelocity * 0.000035 * threadLen);
-          dashOffset  += (target - dashOffset) * 0.12;
-          dashOffset  += (0 - dashOffset) * 0.06;
-          gsap.set(threadPath, { strokeDashoffset: dashOffset });
+          const target = gsap.utils.clamp(-maxShift, maxShift, scrollVelocity * 0.000025 * logoThreadLen);
+          dashOffset  += (target - dashOffset) * 0.10;
+          dashOffset  += (0 - dashOffset) * 0.05;
+          gsap.set(logoThread, { strokeDashoffset: dashOffset });
         });
       });
     }
@@ -280,9 +304,7 @@
       setR: gsap.quickTo(c, 'rotation', { duration: 0.4, ease: EASE.spring }),
     }));
 
-    let mouseX = -9999, mouseY = -9999;
     let rafId = 0;
-    let heroActive = false;
 
     function tick() {
       rafId = 0;
@@ -291,11 +313,11 @@
         const rect = c.getBoundingClientRect();
         const ccx  = rect.left + rect.width  / 2;
         const ccy  = rect.top  + rect.height / 2;
-        const dx   = ccx - mouseX;
-        const dy   = ccy - mouseY;
+        const dx   = ccx - heroPointer.x;
+        const dy   = ccy - heroPointer.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (heroActive && dist < RADIUS && dist > 0) {
+        if (heroPointer.active && dist < RADIUS && dist > 0) {
           const strength = (1 - dist / RADIUS);
           s.setX((dx / dist) * strength * MAX_PUSH);
           s.setY((dy / dist) * strength * MAX_PUSH);
@@ -306,24 +328,24 @@
           s.setR(0);
         }
       });
-      if (heroActive) rafId = requestAnimationFrame(tick);
+      if (heroPointer.active) rafId = requestAnimationFrame(tick);
     }
 
     heroSection.addEventListener('mouseenter', () => {
-      heroActive = true;
+      heroPointer.active = true;
       if (!rafId) rafId = requestAnimationFrame(tick);
     });
 
     heroSection.addEventListener('mouseleave', () => {
-      heroActive = false;
-      mouseX = -9999; mouseY = -9999;
+      heroPointer.active = false;
+      heroPointer.x = -9999; heroPointer.y = -9999;
       tick();
     });
 
     document.addEventListener('mousemove', (e) => {
-      if (!heroActive) return;
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      if (!heroPointer.active) return;
+      heroPointer.x = e.clientX;
+      heroPointer.y = e.clientY;
     });
   }
 
@@ -398,7 +420,10 @@
     delay = delay || 0;
     const splits = [];
     document.querySelectorAll(selector).forEach((el) => {
-      const split = new SplitText(el, { type: 'lines' });
+      /* aria:'none' — SplitText's default auto-aria writes aria-label
+         onto <p> elements, where ARIA prohibits naming; the split lines
+         remain real text for screen readers */
+      const split = new SplitText(el, { type: 'lines', aria: 'none' });
       splits.push(split);
 
       /* Wrap each line in overflow:hidden so the 3px travel is clipped */
@@ -496,11 +521,24 @@
     if (youEl) {
       const maxTravel = Math.min(120, window.innerWidth * 0.3);
       const youDur = 0.22;
+      let youImpulseFired = false; // impulse is a once-per-page moment
 
       heroTl
         .to(youEl, {
           x: maxTravel * 0.45, y: -42, rotation: 3,
           ease: 'none', duration: youDur, overwrite: 'auto',
+          onStart() {
+            if (youImpulseFired) return;
+            if (typeof window.__kylixFlowImpulse !== 'function') return;
+            youImpulseFired = true;
+            const heroEl   = document.querySelector('.section-hero');
+            const youRect  = youEl.getBoundingClientRect();
+            const heroRect = heroEl.getBoundingClientRect();
+            window.__kylixFlowImpulse(
+              youRect.left + youRect.width  * 0.5 - heroRect.left,
+              youRect.top  + youRect.height * 0.5 - heroRect.top
+            );
+          },
         }, 0)
         .to(youEl, {
           x: maxTravel, y: -88, rotation: 6,
@@ -520,22 +558,9 @@
       );
       if (runWithout.length < 2) return null;
 
-      const first    = runWithout[0].getBoundingClientRect();
-      const last     = runWithout[runWithout.length - 1].getBoundingClientRect();
-      const heroEl   = document.querySelector('.section-hero');
-      const heroRect = heroEl.getBoundingClientRect();
-
-      const x1  = first.left  - heroRect.left - 2;
-      const x2  = last.right  - heroRect.left + 2;
-      const y   = last.bottom - heroRect.top  + 5;
-      const mid = (x1 + x2) / 2;
-      const w   = x2 - x1;
-
-      const d = [
-        `M ${x1} ${y}`,
-        `C ${x1 + w * 0.25} ${y + 3}, ${mid - w * 0.1} ${y - 3}, ${mid} ${y}`,
-        `S ${x2 - w * 0.1} ${y + 4}, ${x2} ${y}`,
-      ].join(' ');
+      const geo = computeUnderlineGeometry(runWithout);
+      const d = geo.d, heroRect = geo.heroRect;
+      const heroEl = document.querySelector('.section-hero');
 
       const svgNS = 'http://www.w3.org/2000/svg';
       const svg   = document.createElementNS(svgNS, 'svg');
@@ -558,7 +583,27 @@
       const pathLen = path.getTotalLength();
       gsap.set(path, { strokeDasharray: pathLen, strokeDashoffset: pathLen });
 
-      return { path, pathLen };
+      return { svg, path, pathLen };
+    }
+
+    function computeUnderlineGeometry(words) {
+      const first    = words[0].getBoundingClientRect();
+      const last     = words[words.length - 1].getBoundingClientRect();
+      const heroRect = document.querySelector('.section-hero').getBoundingClientRect();
+
+      const x1  = first.left  - heroRect.left - 2;
+      const x2  = last.right  - heroRect.left + 2;
+      const y   = last.bottom - heroRect.top  + 5;
+      const mid = (x1 + x2) / 2;
+      const w   = x2 - x1;
+
+      const d = [
+        `M ${x1} ${y}`,
+        `C ${x1 + w * 0.25} ${y + 3}, ${mid - w * 0.1} ${y - 3}, ${mid} ${y}`,
+        `S ${x2 - w * 0.1} ${y + 4}, ${x2} ${y}`,
+      ].join(' ');
+
+      return { d, heroRect };
     }
 
     const ul = injectRunUnderline();
@@ -568,16 +613,25 @@
       }, 0.15);
     }
 
+    /* On refresh: re-measure and redraw the SAME path, then invalidate
+       the existing tween so it re-records its start values.
+       NEVER kill()-and-re-add the child here — killing a child of the
+       scrub-paused heroTl makes GSAP gc the whole timeline, silently
+       destroying its ScrollTrigger (this had disabled the entire hero
+       dispersal: chaos objects, "you." departure, background lift). */
     const refreshInjectHandler = () => {
-      const old = document.querySelector('.hero__run-underline');
-      if (old) old.remove();
-      if (underlineTween) { underlineTween.kill(); underlineTween = null; }
-      const freshUl = injectRunUnderline();
-      if (freshUl) {
-        underlineTween = heroTl.to(freshUl.path, {
-          strokeDashoffset: 0, ease: 'none', duration: 0.25,
-        }, 0.15);
-      }
+      if (!ul || !heroSplit || !heroSplit.words) return;
+      const runWithout = heroSplit.words.filter(w =>
+        /^(run|without)$/i.test(w.textContent.trim())
+      );
+      if (runWithout.length < 2) return;
+      const geo = computeUnderlineGeometry(runWithout);
+      ul.svg.style.width  = geo.heroRect.width  + 'px';
+      ul.svg.style.height = geo.heroRect.height + 'px';
+      ul.path.setAttribute('d', geo.d);
+      const len = ul.path.getTotalLength();
+      gsap.set(ul.path, { strokeDasharray: len, strokeDashoffset: len });
+      if (underlineTween) underlineTween.invalidate();
     };
     ScrollTrigger.addEventListener('refresh', refreshInjectHandler);
 
@@ -939,8 +993,11 @@
 
     const youElMob = document.querySelector('.hero__you');
     if (youElMob) {
+      /* 'top -15%' = fires only once the user has scrolled the hero
+         ~15vh out of view. ('top 70%' was already past at load, so the
+         once-tween fired immediately and "you." was never visible.) */
       gsap.to(youElMob, {
-        scrollTrigger: { trigger: '.section-hero', start: 'top 70%', once: true },
+        scrollTrigger: { trigger: '.section-hero', start: 'top -15%', once: true },
         y: -20, autoAlpha: 0, duration: 0.6, ease: EASE.settle,
       });
     }
@@ -1627,4 +1684,509 @@
     }
   }, { threshold: 0 });
   io.observe(hero);
+}());
+
+
+/* ─── HERO CURRENT — "The Current" WebGL particle flow field ────────
+   Three.js (global THREE from CDN). GPU-rendered streak particles
+   advected through curl-noise. Progressive enhancement:
+   - prefers-reduced-motion → no canvas init (L1+L4 static composition)
+   - No WebGL → no canvas (same static fallback)
+   - FPS watchdog → 3-rung degradation ladder, one-way per session
+   - IntersectionObserver → stop RAF when hero out of view
+   - visibilitychange → pause / resume
+   Cursor: reads window.__kylixHeroPointer (shared with initLivingType)
+   Impulse API: window.__kylixFlowImpulse(x, y) — wired by "you." departure
+   Text avoidance: quarter-res repulsion grid rebuilt by __kylixUpdateTextMask
+──────────────────────────────────────────────────────────────────── */
+(function initHeroCurrent() {
+  'use strict';
+
+  // Guard: reduced-motion → static L1+L4 composition, no canvas
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var hero = document.querySelector('.section-hero');
+  if (!hero) return;
+
+  // Shared pointer state written by initLivingType
+  var ptr = window.__kylixHeroPointer || { x: -9999, y: -9999, active: false };
+
+  // Lazy init via requestIdleCallback — LCP paints headline first.
+  // Three.js module build is import()ed here (the UMD three.min.js no
+  // longer ships past r159), keeping its ~120 kb off the critical path;
+  // any failure falls back to the static L1+L4 composition.
+  (window.requestIdleCallback || function(cb) { setTimeout(cb, 250); })(function() {
+    import('https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js')
+      .then(start)
+      .catch(function() {});
+  });
+
+  function start(THREE) {
+
+    var W = hero.offsetWidth;
+    var H = hero.offsetHeight;
+    var isMobile = W < 768;
+
+    // ── Canvas ──────────────────────────────────────────────────────
+    var canvas = document.createElement('canvas');
+    canvas.id = 'hero-current';
+    canvas.className = 'hero__current-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.setAttribute('inert', '');
+    hero.appendChild(canvas);
+
+    // WebGL2 → WebGL1 → no WebGL → static fallback
+    var glCtx = canvas.getContext('webgl2') ||
+                canvas.getContext('webgl') ||
+                canvas.getContext('experimental-webgl');
+    if (!glCtx) { canvas.remove(); return; }
+
+    // ── Three.js renderer ────────────────────────────────────────────
+    var renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      context: glCtx,
+      alpha: true,
+      antialias: false,
+      powerPreference: 'high-performance',
+    });
+    var dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2.0);
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+
+    // ── Orthographic camera (centered pixel coords) ──────────────────
+    var scene  = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, -1, 1);
+
+    // ── Particle count and degradation ───────────────────────────────
+    /* Tier-2 tune (review 2026-06-12): 1200/380 at the original size and
+       opacity read as confetti static fighting the headline — halved
+       density reads as a current, not noise */
+    var FULL_COUNT = isMobile ? 220 : 520;
+    var drawCount  = FULL_COUNT;
+    var degradeLevel = 0;
+
+    // ── CPU-side particle arrays ─────────────────────────────────────
+    var px       = new Float32Array(FULL_COUNT);
+    var py       = new Float32Array(FULL_COUNT);
+    var pvx      = new Float32Array(FULL_COUNT);
+    var pvy      = new Float32Array(FULL_COUNT);
+    var plife    = new Float32Array(FULL_COUNT);
+    var pmaxLife = new Float32Array(FULL_COUNT);
+    var pseed    = new Float32Array(FULL_COUNT);
+
+    // ── Geometry + GPU attributes ────────────────────────────────────
+    var geo      = new THREE.BufferGeometry();
+    var posArr   = new Float32Array(FULL_COUNT * 3);
+    var velArr   = new Float32Array(FULL_COUNT * 2);
+    var alpArr   = new Float32Array(FULL_COUNT);
+    var posAttr  = new THREE.BufferAttribute(posArr, 3);
+    var velAttr  = new THREE.BufferAttribute(velArr, 2);
+    var alpAttr  = new THREE.BufferAttribute(alpArr, 1);
+    posAttr.usage = THREE.DynamicDrawUsage;
+    velAttr.usage = THREE.DynamicDrawUsage;
+    alpAttr.usage = THREE.DynamicDrawUsage;
+    geo.setAttribute('position', posAttr);
+    geo.setAttribute('a_vel',    velAttr);
+    geo.setAttribute('a_seed',   new THREE.BufferAttribute(pseed, 1));
+    geo.setAttribute('a_alpha',  alpAttr);
+
+    // ── Shaders ──────────────────────────────────────────────────────
+    var VERT = [
+      'attribute vec2 a_vel;',
+      'attribute float a_seed;',
+      'attribute float a_alpha;',
+      'varying vec2 v_vel;',
+      'varying float v_seed;',
+      'varying float v_alpha;',
+      'uniform float u_ptSize;',
+      'void main() {',
+      '  float spd = length(a_vel);',
+      '  v_vel = spd > 0.001 ? normalize(a_vel) : vec2(1.0, 0.0);',
+      '  v_seed  = a_seed;',
+      '  v_alpha = a_alpha;',
+      '  gl_PointSize = u_ptSize * clamp(0.7 + spd * 0.5, 0.7, 1.6);',
+      '  gl_Position  = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
+      '}',
+    ].join('\n');
+
+    var FRAG = [
+      'precision mediump float;',
+      'varying vec2 v_vel;',
+      'varying float v_seed;',
+      'varying float v_alpha;',
+      'uniform vec3 u_colA;',
+      'uniform vec3 u_colB;',
+      'uniform vec3 u_colC;',
+      'uniform float u_streaks;',
+      'void main() {',
+      '  vec2 uv = gl_PointCoord * 2.0 - 1.0;',
+      '  float d;',
+      '  if (u_streaks > 0.5) {',
+      '    float ang = atan(v_vel.y, v_vel.x);',
+      '    float ca = cos(-ang); float sa = sin(-ang);',
+      '    vec2 r = vec2(ca*uv.x - sa*uv.y, sa*uv.x + ca*uv.y);',
+      '    d = r.x*r.x*0.09 + r.y*r.y*4.5;',
+      '  } else {',
+      '    d = dot(uv, uv);',
+      '  }',
+      '  if (d > 1.0) discard;',
+      '  float f = 1.0 - smoothstep(0.25, 1.0, d);',
+      // Tier-2 tune: mostly ink-ghost fibres, ~40% ink-muted, orange
+      // <1% (brand: orange is a rare signal, not decoration); global
+      // alpha 0.58 -> 0.34 so the field sits beneath the words
+      '  vec3 col = v_seed > 0.992 ? u_colC : (v_seed > 0.6 ? u_colA : u_colB);',
+      '  gl_FragColor = vec4(col, f * v_alpha * 0.34);',
+      '}',
+    ].join('\n');
+
+    var mat = new THREE.ShaderMaterial({
+      vertexShader:   VERT,
+      fragmentShader: FRAG,
+      uniforms: {
+        u_ptSize:  { value: (isMobile ? 7.5 : 12.0) * dpr }, // Tier-2: 9/15 read too heavy
+        u_colA:    { value: new THREE.Color(0x6B5540) },
+        u_colB:    { value: new THREE.Color(0xB8A898) },
+        u_colC:    { value: new THREE.Color(0xFF4F1F) },
+        u_streaks: { value: 1.0 },
+      },
+      transparent: true,
+      depthWrite:  false,
+      blending:    THREE.NormalBlending,
+    });
+
+    var points = new THREE.Points(geo, mat);
+    scene.add(points);
+    geo.setDrawRange(0, drawCount);
+
+    // ── Noise helpers ────────────────────────────────────────────────
+    function srand(s) {
+      var x = Math.sin(s + 1.7) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function sNoise(x, y) {
+      var n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+      return n - Math.floor(n);
+    }
+
+    function iNoise(x, y) {
+      var ix = Math.floor(x), iy = Math.floor(y);
+      var fx = x - ix, fy = y - iy;
+      var ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+      var a = sNoise(ix, iy),   b = sNoise(ix+1, iy);
+      var c = sNoise(ix, iy+1), d = sNoise(ix+1, iy+1);
+      return a + (b-a)*ux + (c-a)*uy + (d-b-c+a)*ux*uy;
+    }
+
+    // 4-octave FBM; time drives slow drift in both axes
+    function fbm(x, y, t) {
+      var v = 0, amp = 0.5, freq = 1;
+      var tx = t * 0.04, ty = t * 0.018;
+      for (var k = 0; k < 4; k++) {
+        v += iNoise(x*freq + tx, y*freq + ty) * amp;
+        freq *= 2; amp *= 0.5;
+      }
+      return v;
+    }
+
+    // Curl of FBM noise → divergence-free flow, no particle clumping
+    function curlNoise(x, y, t) {
+      var eps = 0.007, sc = 0.0012;
+      var sx = x * sc, sy = y * sc;
+      return {
+        x: ((fbm(sx, sy+eps, t) - fbm(sx, sy-eps, t)) / (2*eps)) * 2.4,
+        y: -((fbm(sx+eps, sy, t) - fbm(sx-eps, sy, t)) / (2*eps)),
+      };
+    }
+
+    // ── Text repulsion grid (quarter resolution) ─────────────────────
+    var MDIV = 4;
+    var mW = 1, mH = 1, maskData = null;
+
+    function buildMask() {
+      mW = Math.max(1, Math.ceil(W / MDIV));
+      mH = Math.max(1, Math.ceil(H / MDIV));
+      var oc = document.createElement('canvas');
+      oc.width = mW; oc.height = mH;
+      var ctx = oc.getContext('2d');
+      ctx.clearRect(0, 0, mW, mH);
+      var hr = hero.getBoundingClientRect();
+      var sc = 1 / MDIV;
+      ctx.fillStyle = '#fff';
+      document.querySelectorAll('.hero__headline .char').forEach(function(c) {
+        var r = c.getBoundingClientRect();
+        ctx.fillRect(
+          (r.left - hr.left) * sc - 6,
+          (r.top  - hr.top)  * sc - 3,
+          r.width  * sc + 12,
+          r.height * sc + 6
+        );
+      });
+      var imgD = ctx.getImageData(0, 0, mW, mH).data;
+      maskData = new Float32Array(mW * mH);
+      for (var i = 0; i < maskData.length; i++) maskData[i] = imgD[i*4] / 255.0;
+    }
+
+    window.__kylixUpdateTextMask = function() {
+      W = hero.offsetWidth; H = hero.offsetHeight;
+      buildMask();
+    };
+
+    buildMask();
+
+    function getMaskVal(cx, cy) {
+      var domX = cx + W/2, domY = H/2 - cy;
+      var mx = Math.floor(domX / MDIV), my = Math.floor(domY / MDIV);
+      if (!maskData || mx < 0 || mx >= mW || my < 0 || my >= mH) return 0;
+      return maskData[my * mW + mx];
+    }
+
+    // ── Particle initialisation ──────────────────────────────────────
+    // Respawn is uniform across the field (the 20-frame alpha fade-in
+    // hides the pop) and salted: srand(i…) alone meant every particle
+    // respawned at the same spot forever — a repeating pattern, and
+    // with edge-spawning a visible density rim along the borders.
+    var respawnSalt = 0;
+    function initP(i, scatter) {
+      pseed[i]    = srand(i * 13.7 + 0.01);
+      pmaxLife[i] = 160 + Math.floor(srand(i * 7.3 + 1 + respawnSalt) * 140);
+      if (scatter) {
+        plife[i] = Math.floor(srand(i * 3.1) * pmaxLife[i]);
+      } else {
+        plife[i] = pmaxLife[i];
+        respawnSalt += 0.0137;
+      }
+      px[i] = (srand(i * 2.1 + respawnSalt) - 0.5) * W;
+      py[i] = (srand(i * 2.3 + respawnSalt * 1.7) - 0.5) * H;
+      pvx[i] = 0; pvy[i] = 0;
+    }
+
+    for (var j = 0; j < FULL_COUNT; j++) initP(j, true);
+
+    // ── Impulse state ────────────────────────────────────────────────
+    var impActive = false, impX = 0, impY = 0, impAge = 0;
+    var IMP_R = 220, IMP_STR = 5.0, IMP_DUR = 45;
+
+    // Public API: called by "you." departure in heroTl.onStart
+    window.__kylixFlowImpulse = function(domX, domY) {
+      impX = domX - W/2;
+      impY = H/2 - domY;
+      impActive = true;
+      impAge = 0;
+    };
+
+    // ── Mobile scroll shear (gated inside the handler so a resize
+    //    across the 768px boundary behaves correctly) ─────────────────
+    var scrollShear = 0;
+    window.addEventListener('scroll', function() {
+      scrollShear = isMobile
+        ? Math.min(window.scrollY / window.innerHeight, 1) * 0.55
+        : 0;
+    }, { passive: true });
+
+    // ── FPS watchdog — 2 s rolling window, judged on the MEASURED span
+    //    (never on an assumed one: a partial window right after start or
+    //    after a tier change would otherwise read as ~2 fps and cascade
+    //    straight to teardown) ─────────────────────────────────────────
+    var fpsSamples = [];
+
+    function checkFPS(now) {
+      // A single long gap is a stall (tab switch, screenshot, GC, window
+      // drag), not sustained low fps — restart the window instead of
+      // letting one hiccup ratchet a fast machine down a tier.
+      var prev = fpsSamples[fpsSamples.length - 1];
+      if (prev !== undefined && now - prev > 250) fpsSamples = [];
+      fpsSamples.push(now);
+      var cutoff = now - 2000;
+      while (fpsSamples.length && fpsSamples[0] < cutoff) fpsSamples.shift();
+      var span = now - fpsSamples[0];
+      if (span < 1500) return; // warm-up: never judge a partial window
+      var fps = (fpsSamples.length - 1) * 1000 / span;
+      if (fps < 20 && degradeLevel < 3) {
+        degradeLevel = 3; // tick() exits on next frame
+        teardown();
+      } else if (fps < 30 && degradeLevel < 2) {
+        degradeLevel = 2;
+        drawCount = Math.floor(FULL_COUNT * 0.35);
+        geo.setDrawRange(0, drawCount);
+        mat.uniforms.u_streaks.value = 0.0;
+        // round fallback at full size reads as blobs, not grain
+        mat.uniforms.u_ptSize.value *= 0.6;
+        fpsSamples = [];
+      } else if (fps < 45 && degradeLevel < 1) {
+        degradeLevel = 1;
+        drawCount = Math.floor(FULL_COUNT * 0.60);
+        geo.setDrawRange(0, drawCount);
+        fpsSamples = [];
+      }
+    }
+
+    // Read-only diagnostic handle — the watchdog is otherwise
+    // unobservable; used by the review harness and live verification
+    window.__kylixCurrentDebug = {
+      get level() { return degradeLevel; },
+      get count() { return drawCount; },
+      get fps() {
+        if (fpsSamples.length < 2) return -1;
+        var span = fpsSamples[fpsSamples.length - 1] - fpsSamples[0];
+        return span > 0 ? (fpsSamples.length - 1) * 1000 / span : -1;
+      },
+    };
+
+    // ── Render loop ──────────────────────────────────────────────────
+    var rafId = 0, heroVisible = true, simTime = 0, lastNow = 0;
+    var FLOW_SPD = 0.55;
+    var CUR_R   = isMobile ? 0 : 150;
+    var CUR_STR = 2.2;
+    var MARGIN  = 24;
+
+    function tick(now) {
+      if (degradeLevel >= 3) { rafId = 0; return; }
+      rafId = requestAnimationFrame(tick);
+
+      var dt = lastNow ? Math.min((now - lastNow) / 16.667, 3.0) : 1.0;
+      lastNow = now;
+      simTime += dt;
+
+      checkFPS(now);
+
+      var hr    = hero.getBoundingClientRect();
+      var mxC   = ptr.active ? ptr.x - hr.left - W/2 : -99999;
+      var myC   = ptr.active ? H/2 - (ptr.y - hr.top) : -99999;
+
+      if (impActive) { impAge++; if (impAge >= IMP_DUR) impActive = false; }
+
+      for (var i = 0; i < drawCount; i++) {
+        plife[i]--;
+
+        // Alpha: fade in over first 20 frames, fade out over last 20
+        var elapsed = pmaxLife[i] - plife[i];
+        var fadeIn  = Math.min(elapsed / 20.0, 1.0);
+        var fadeOut = Math.min(plife[i]  / 20.0, 1.0);
+        alpArr[i]   = Math.min(fadeIn, fadeOut);
+
+        if (plife[i] <= 0) { initP(i, false); continue; }
+
+        // Curl-noise flow
+        var curl = curlNoise(px[i], py[i], simTime * FLOW_SPD);
+        var tvx  = curl.x + scrollShear;
+        var tvy  = curl.y;
+
+        // Cursor soft attractor (desktop only)
+        if (ptr.active && CUR_R > 0) {
+          var cdx = mxC - px[i], cdy = myC - py[i];
+          var cd  = Math.sqrt(cdx*cdx + cdy*cdy);
+          if (cd < CUR_R && cd > 1) {
+            var cs = (1 - cd/CUR_R) * CUR_STR;
+            tvx += (cdx/cd)*cs; tvy += (cdy/cd)*cs;
+          }
+        }
+
+        // Impulse radial outward push
+        if (impActive) {
+          var idx_ = px[i] - impX, idy_ = py[i] - impY;
+          var id_  = Math.sqrt(idx_*idx_ + idy_*idy_);
+          if (id_ < IMP_R && id_ > 1) {
+            var decay = 1 - impAge / IMP_DUR;
+            var istr  = (1 - id_/IMP_R) * IMP_STR * decay;
+            tvx += (idx_/id_)*istr; tvy += (idy_/id_)*istr;
+          }
+        }
+
+        // Text repulsion (gradient of mask field)
+        var mv = getMaskVal(px[i], py[i]);
+        if (mv > 0.08) {
+          var rx_ = getMaskVal(px[i]+10, py[i]) - getMaskVal(px[i]-10, py[i]);
+          var ry_ = getMaskVal(px[i], py[i]+10) - getMaskVal(px[i], py[i]-10);
+          var rl_ = Math.sqrt(rx_*rx_ + ry_*ry_);
+          if (rl_ > 0.001) { tvx -= (rx_/rl_)*mv*2.5; tvy -= (ry_/rl_)*mv*2.5; }
+        }
+
+        // Smooth velocity update
+        pvx[i] += (tvx - pvx[i]) * 0.16;
+        pvy[i] += (tvy - pvy[i]) * 0.16;
+
+        // Integrate position
+        px[i] += pvx[i] * dt;
+        py[i] += pvy[i] * dt;
+
+        // Wrap with margin
+        var hw = W/2 + MARGIN, hh = H/2 + MARGIN;
+        if (px[i] >  hw) px[i] -= (W + MARGIN*2);
+        if (px[i] < -hw) px[i] += (W + MARGIN*2);
+        if (py[i] >  hh) py[i] -= (H + MARGIN*2);
+        if (py[i] < -hh) py[i] += (H + MARGIN*2);
+
+        var i3 = i*3, i2 = i*2;
+        posArr[i3]   = px[i]; posArr[i3+1] = py[i]; posArr[i3+2] = 0;
+        velArr[i2]   = pvx[i]; velArr[i2+1] = pvy[i];
+      }
+
+      posAttr.needsUpdate = true;
+      velAttr.needsUpdate = true;
+      alpAttr.needsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+    // ── Lifecycle ────────────────────────────────────────────────────
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId); rafId = 0;
+      } else if (heroVisible && !rafId && degradeLevel < 3) {
+        lastNow = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+    });
+
+    var heroIO = new IntersectionObserver(function(entries) {
+      heroVisible = entries[0].isIntersecting;
+      if (heroVisible && !rafId && degradeLevel < 3) {
+        lastNow = performance.now();
+        rafId = requestAnimationFrame(tick);
+      } else if (!heroVisible && rafId) {
+        cancelAnimationFrame(rafId); rafId = 0;
+      }
+    }, { threshold: 0 });
+    heroIO.observe(hero);
+
+    var resizeTimer = 0;
+    var resizeObs = new ResizeObserver(function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        W = hero.offsetWidth; H = hero.offsetHeight;
+        isMobile = W < 768;
+        renderer.setSize(W, H);
+        camera.left = -W/2; camera.right = W/2;
+        camera.top  =  H/2; camera.bottom = -H/2;
+        camera.updateProjectionMatrix();
+        buildMask();
+      }, 150);
+    });
+    resizeObs.observe(hero);
+
+    // Tier-3 exit: fade out, free GPU resources, remove the canvas —
+    // never leave a frozen frame composited over the hero
+    function teardown() {
+      heroIO.disconnect();
+      resizeObs.disconnect();
+      gsap.to(canvas, {
+        opacity: 0, duration: 0.45, ease: 'expo.out',
+        onComplete: function() {
+          geo.dispose(); mat.dispose(); renderer.dispose();
+          canvas.remove();
+        },
+      });
+    }
+
+    // Fade in after lazy init (settle easing)
+    canvas.style.opacity = '0';
+    gsap.to(canvas, { opacity: 1, duration: 0.6, ease: 'expo.out', delay: 0.15 });
+
+    lastNow = performance.now();
+    rafId   = requestAnimationFrame(tick);
+
+  } // end start()
+
 }());

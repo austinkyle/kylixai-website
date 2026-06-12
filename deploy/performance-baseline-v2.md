@@ -22,3 +22,22 @@ Playfair/Lora Georgia fallbacks (main.css §0) make the swap CLS-safe.
 ## JS payload
 GSAP core + ScrollTrigger + SplitText (CDN) ≈ 57 kb gz; site JS ~14 kb raw incl.
 ~3.5 kb inline WebGL hero texture (no library). Within the <150 kb budget.
+
+---
+
+## v2.1 — The Current (Review 2, 2026-06-12)
+
+**Build**: main.css?v=9 / main.js?v=10 (Three.js module dynamically imported at idle —
+off the critical path; ~120 kb gz loads only when the field runs).
+
+| Metric | Desktop | Mobile | Status |
+|--------|---------|--------|--------|
+| Performance | 100 | 97 | ✅ |
+| LCP | 0.3 s (h1#hero-headline) | 1.2 s | ✅ |
+| TBT | 0 ms | 190 ms | ✅ |
+| CLS | 0.021 | 0.001 | ✅ (headline min-height handoff; monitor) |
+| Accessibility | 100 | — | ✅ (was 92/93) |
+
+Field runtime (real GPU, retina): 118–121 fps tier 0 sustained incl. hover.
+Mobile 390×844 @ 4× CPU throttle, DPR 3: locked 60 fps tier 0, no degradation
+over a multi-minute scroll session. Measured via `window.__kylixCurrentDebug`.
