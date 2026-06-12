@@ -435,6 +435,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
+  text-align: center;
 }
 
 /* ─── HERO ASSEMBLY — character split ─────────────────────────── */
@@ -1088,13 +1089,17 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .footer__wordmark {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  letter-spacing: 0.02em;
   text-decoration: none;
-  color: var(--color-ink);
-  position: relative;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.footer__logo-svg {
+  display: block;
+  height: 40px;
+  width: 200px;
+  flex-shrink: 0;
 }
 
 .footer__tagline {
