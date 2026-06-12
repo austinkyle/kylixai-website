@@ -416,6 +416,31 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   color: var(--color-ink);
 }
 
+/* ─── HERO ASSEMBLY — character split ─────────────────────────── */
+.hero__headline .char {
+  display: inline-block;
+}
+
+.hero__you {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Ink underline — injected and animated by JS */
+.hero__run-underline {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.hero__run-underline-path {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .hero__sub {
   font-family: var(--font-body);
   font-size: var(--text-lg);
@@ -1272,5 +1297,13 @@ main {
   .step__doodle-path,
   .steps-thread-path {
     stroke-dashoffset: 0 !important;
+  }
+  .hero__run-underline-path {
+    stroke-dashoffset: 0 !important;
+    stroke-dasharray: 1000 !important;
+  }
+  .hero__you {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

@@ -31,6 +31,8 @@
 
   const LAYER_SPEED = { back: 0.15, mid: 0.35, front: 0.55 };
 
+  let heroSplit = null;
+
   /* ─── Shared scroll velocity (px/s) ─────────────────────────────
      ScrollTrigger has no static getVelocity(); sample scroll position
      inside the GSAP ticker instead — no raw scroll listeners. */
@@ -124,11 +126,6 @@
 
   (function initPageLoad() {
     const headlineEl = document.querySelector('.hero__headline');
-    let heroSplit = null;
-    if (headlineEl) {
-      heroSplit = new SplitText(headlineEl, { type: 'words' });
-      headlineEl.style.overflow = 'hidden';
-    }
 
     /* Nav thread — set draw state before timeline so it animates in */
     const threadPath = document.querySelector('.nav__thread-path');
@@ -138,39 +135,112 @@
       gsap.set(threadPath, { strokeDasharray: threadLen, strokeDashoffset: threadLen });
     }
 
+    /* ── Character scatter setup ── */
+    let chars = null;
+    let assemblyOrderedChars = null;
+
+    if (headlineEl) {
+      /* Reserve layout box BEFORE split to prevent CLS */
+      const headlineBox = headlineEl.getBoundingClientRect();
+      headlineEl.style.minHeight = headlineBox.height + 'px';
+
+      heroSplit = new SplitText(headlineEl, { type: 'words,chars' });
+
+      heroSplit.chars.forEach(c => c.setAttribute('aria-hidden', 'true'));
+      heroSplit.words.forEach(w => w.setAttribute('aria-hidden', 'true'));
+
+      const TIERS = [
+        { scale: 1.00, blur: 0   },
+        { scale: 0.97, blur: 0.3 },
+        { scale: 0.95, blur: 0.5 },
+      ];
+
+      chars = heroSplit.chars;
+      const isMobile = window.innerWidth < 1024;
+      const scatterX = isMobile ? 30 : 60;
+      const scatterY = isMobile ? 20 : 40;
+
+      const seededRand = (seed) => {
+        const x = Math.sin(seed + 1) * 43758.5453;
+        return x - Math.floor(x);
+      };
+
+      const fromStates = chars.map((c, i) => {
+        const tier = i % 3;
+        return {
+          x:        (seededRand(i * 3)     - 0.5) * 2 * scatterX,
+          y:        (seededRand(i * 3 + 1) - 0.5) * 2 * scatterY,
+          rotation: (seededRand(i * 3 + 2) - 0.5) * 16,
+          opacity:  0,
+          scale:    TIERS[tier].scale,
+          filter:   TIERS[tier].blur > 0 ? `blur(${TIERS[tier].blur}px)` : 'none',
+        };
+      });
+
+      chars.forEach((c, i) => gsap.set(c, fromStates[i]));
+
+      const assemblyOrder = chars.map((c, i) => ({
+        c,
+        order: i + (seededRand(i * 7) - 0.5) * 6,
+      }));
+      assemblyOrder.sort((a, b) => a.order - b.order);
+      assemblyOrderedChars = assemblyOrder.map(o => o.c);
+    }
+
     const tl = gsap.timeline({ defaults: { ease: EASE.settle } });
 
+    tl.from('.hero__badge', {
+      y: 14, opacity: 0, duration: 0.5, delay: 0.1,
+    });
+
+    if (chars && assemblyOrderedChars) {
+      tl.to(
+        assemblyOrderedChars,
+        {
+          x: 0, y: 0, rotation: 0, opacity: 1, scale: 1,
+          filter: 'none',
+          duration: 0.55,
+          stagger: 0.02,
+          ease: EASE.settle,
+          onStart() {
+            gsap.set(chars, { willChange: 'transform, opacity, filter' });
+          },
+          onComplete() {
+            chars.forEach(c => {
+              c.style.willChange = '';
+              c.style.filter = '';
+            });
+            headlineEl.style.minHeight = '';
+            initLivingType(chars);
+          },
+        },
+        '-=0.20'
+      );
+    }
+
+    tl.addLabel('assembled');
+
     tl
-      .from('.hero__badge', {
-        y: 14, opacity: 0, duration: 0.5, delay: 0.1,
-      })
-      .from(heroSplit ? heroSplit.words : '.hero__headline', {
-        y: '110%', opacity: 0, duration: 0.70, stagger: 0.055,
-      }, '-=0.20')
-      .from('.hero__sub', {
-        y: 22, opacity: 0, duration: 0.60,
-      }, '-=0.40')
+      .from('.hero__sub', { y: 22, opacity: 0, duration: 0.60 }, 'assembled-=0.40')
       .from('.cta-button:not(.cta-button--form)', {
         scale: 0.88, opacity: 0, duration: 0.65, ease: EASE.spring,
       }, '-=0.35')
-      .from('.hero__reassurance', {
-        opacity: 0, duration: 0.45,
-      }, '-=0.30');
+      .from('.hero__reassurance', { opacity: 0, duration: 0.45 }, '-=0.30');
 
-    /* Hero illustration objects fade in — delayed past headline sweep climax */
+    /* Hero illustration objects fade in — delayed past headline assembly climax */
     tl.from(
       ['#hero-alarm', '#hero-invoice', '#hero-cord', '#hero-coffee'],
       { opacity: 0, duration: 0.8, stagger: 0.12, ease: EASE.settle },
       1.05
     );
 
-    /* Thread draws as headline sweeps in */
+    /* Thread draws after assembly — chaos resolves, then the system activates */
     if (threadPath) {
       tl.to(threadPath, {
         strokeDashoffset: 0,
         duration: 0.85,
         ease: EASE.settle,
-      }, 0.35);
+      }, 'assembled');
     }
 
     /* After load: bind scroll velocity to thread dashoffset */
@@ -187,6 +257,75 @@
       });
     }
   })();
+
+  /* ================================================================
+     LIVING TYPE — cursor proximity repulsion (desktop hover only)
+     Called from initPageLoad's assembly onComplete.
+     ================================================================ */
+
+  function initLivingType(chars) {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (window.innerWidth < 1024) return;
+
+    const heroSection = document.querySelector('.section-hero');
+    if (!heroSection) return;
+
+    const RADIUS   = 100;
+    const MAX_PUSH = 6;
+    const MAX_ROT  = 1.5;
+
+    const setters = chars.map(c => ({
+      setX: gsap.quickTo(c, 'x',        { duration: 0.4, ease: EASE.spring }),
+      setY: gsap.quickTo(c, 'y',        { duration: 0.4, ease: EASE.spring }),
+      setR: gsap.quickTo(c, 'rotation', { duration: 0.4, ease: EASE.spring }),
+    }));
+
+    let mouseX = -9999, mouseY = -9999;
+    let rafId = 0;
+    let heroActive = false;
+
+    function tick() {
+      rafId = 0;
+      chars.forEach((c, i) => {
+        const s    = setters[i];
+        const rect = c.getBoundingClientRect();
+        const ccx  = rect.left + rect.width  / 2;
+        const ccy  = rect.top  + rect.height / 2;
+        const dx   = ccx - mouseX;
+        const dy   = ccy - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (heroActive && dist < RADIUS && dist > 0) {
+          const strength = (1 - dist / RADIUS);
+          s.setX((dx / dist) * strength * MAX_PUSH);
+          s.setY((dy / dist) * strength * MAX_PUSH);
+          s.setR((dx / dist) * strength * MAX_ROT);
+        } else {
+          s.setX(0);
+          s.setY(0);
+          s.setR(0);
+        }
+      });
+      if (heroActive) rafId = requestAnimationFrame(tick);
+    }
+
+    heroSection.addEventListener('mouseenter', () => {
+      heroActive = true;
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+      heroActive = false;
+      mouseX = -9999; mouseY = -9999;
+      tick();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!heroActive) return;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+  }
 
   /* ================================================================
      NAV SCROLLED STATE
@@ -351,6 +490,96 @@
         ease: 'none',
         duration: 1,
       }, 0);
+
+    /* ── "you." departs across first ~40% of hero scrub range ── */
+    const youEl = document.querySelector('.hero__you');
+    if (youEl) {
+      const maxTravel = Math.min(120, window.innerWidth * 0.3);
+      const youDur = 0.22;
+
+      heroTl
+        .to(youEl, {
+          x: maxTravel * 0.45, y: -42, rotation: 3,
+          ease: 'none', duration: youDur, overwrite: 'auto',
+        }, 0)
+        .to(youEl, {
+          x: maxTravel, y: -88, rotation: 6,
+          autoAlpha: 0,
+          ease: 'none', duration: youDur, overwrite: 'auto',
+        }, youDur * 0.65);
+    }
+
+    /* ── Ink underline: inject SVG + wire into heroTl ── */
+    let underlineTween = null;
+
+    function injectRunUnderline() {
+      if (!heroSplit || !heroSplit.words) return null;
+
+      const runWithout = heroSplit.words.filter(w =>
+        /^(run|without)$/i.test(w.textContent.trim())
+      );
+      if (runWithout.length < 2) return null;
+
+      const first    = runWithout[0].getBoundingClientRect();
+      const last     = runWithout[runWithout.length - 1].getBoundingClientRect();
+      const heroEl   = document.querySelector('.section-hero');
+      const heroRect = heroEl.getBoundingClientRect();
+
+      const x1  = first.left  - heroRect.left - 2;
+      const x2  = last.right  - heroRect.left + 2;
+      const y   = last.bottom - heroRect.top  + 5;
+      const mid = (x1 + x2) / 2;
+      const w   = x2 - x1;
+
+      const d = [
+        `M ${x1} ${y}`,
+        `C ${x1 + w * 0.25} ${y + 3}, ${mid - w * 0.1} ${y - 3}, ${mid} ${y}`,
+        `S ${x2 - w * 0.1} ${y + 4}, ${x2} ${y}`,
+      ].join(' ');
+
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg   = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.classList.add('hero__run-underline');
+      svg.style.cssText = [
+        'position:absolute', 'left:0', 'top:0',
+        `width:${heroRect.width}px`, `height:${heroRect.height}px`,
+        'pointer-events:none', 'overflow:visible',
+      ].join(';');
+
+      const path = document.createElementNS(svgNS, 'path');
+      path.classList.add('hero__run-underline-path');
+      path.setAttribute('d', d);
+
+      svg.appendChild(path);
+      heroEl.appendChild(svg);
+
+      /* getTotalLength() requires the element to be in the live DOM */
+      const pathLen = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: pathLen, strokeDashoffset: pathLen });
+
+      return { path, pathLen };
+    }
+
+    const ul = injectRunUnderline();
+    if (ul) {
+      underlineTween = heroTl.to(ul.path, {
+        strokeDashoffset: 0, ease: 'none', duration: 0.25,
+      }, 0.15);
+    }
+
+    const refreshInjectHandler = () => {
+      const old = document.querySelector('.hero__run-underline');
+      if (old) old.remove();
+      if (underlineTween) { underlineTween.kill(); underlineTween = null; }
+      const freshUl = injectRunUnderline();
+      if (freshUl) {
+        underlineTween = heroTl.to(freshUl.path, {
+          strokeDashoffset: 0, ease: 'none', duration: 0.25,
+        }, 0.15);
+      }
+    };
+    ScrollTrigger.addEventListener('refresh', refreshInjectHandler);
 
     /* ── 2. Cross-boundary parallax objects ── */
 
@@ -543,6 +772,9 @@
     return () => {
       splits.forEach((s) => s.revert && s.revert());
       refreshHandlers.forEach((h) => ScrollTrigger.removeEventListener('refreshInit', h));
+      ScrollTrigger.removeEventListener('refresh', refreshInjectHandler);
+      const runUl = document.querySelector('.hero__run-underline');
+      if (runUl) runUl.remove();
       /* Kill ambient drift loops spawned inside ScrollTrigger callbacks —
          matchMedia doesn't track tweens created in deferred callbacks */
       gsap.killTweensOf([
@@ -589,6 +821,19 @@
       if (r !== 0) props.rotation = r;
       gsap.to(el, props);
     });
+
+    const youElTablet = document.querySelector('.hero__you');
+    if (youElTablet) {
+      const maxTravelT = Math.min(60, window.innerWidth * 0.2);
+      gsap.to(youElTablet, {
+        x: maxTravelT * 0.45, y: -28, rotation: 3,
+        ease: 'none', overwrite: 'auto', scrollTrigger: trigger,
+      });
+      gsap.to(youElTablet, {
+        x: maxTravelT, y: -55, rotation: 5, autoAlpha: 0,
+        ease: 'none', overwrite: 'auto', scrollTrigger: trigger,
+      });
+    }
 
     /* Recognition — simple sticky scatter trigger */
     gsap.from('.recognition-sticky', {
@@ -691,6 +936,14 @@
       scrollTrigger: { trigger: '.section-cta', start: 'top 82%', once: true },
       y: 16, opacity: 0, duration: 0.5, stagger: 0.08, ease: EASE.settle,
     });
+
+    const youElMob = document.querySelector('.hero__you');
+    if (youElMob) {
+      gsap.to(youElMob, {
+        scrollTrigger: { trigger: '.section-hero', start: 'top 70%', once: true },
+        y: -20, autoAlpha: 0, duration: 0.6, ease: EASE.settle,
+      });
+    }
 
     /* No cleanup needed — no SplitText created */
   });
