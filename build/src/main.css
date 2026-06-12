@@ -6,6 +6,27 @@
    ================================================================ */
 
 
+/* ─── 0. FONT FALLBACK — metric-matched to minimise CLS on Playfair swap ─── */
+
+@font-face {
+  font-family: "Playfair-Fallback";
+  src: local("Georgia");
+  size-adjust: 111%;
+  ascent-override: 88%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Lora-Fallback";
+  src: local("Georgia");
+  size-adjust: 99%;
+  ascent-override: 91%;
+  descent-override: 23%;
+  line-gap-override: 0%;
+}
+
+
 /* ─── 1. CUSTOM PROPERTIES ──────────────────────────────────────── */
 
 :root {
@@ -43,8 +64,8 @@
   --shadow-stamp:  3px 3px 0 rgba(44,31,14,0.20);
 
   /* Typography */
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Lora', Georgia, serif;
+  --font-display: 'Playfair Display', 'Playfair-Fallback', serif;
+  --font-body:    'Lora', 'Lora-Fallback', serif;
 
   /* Type scale */
   --text-xs:   clamp(0.75rem,  1.5vw, 0.875rem);
@@ -92,6 +113,9 @@
   --radius-btn: 6px;
   --radius-full: 9999px;
 
+  /* Easing — CSS mirror of the GSAP vocabulary (snap = power3.out) */
+  --ease-snap: cubic-bezier(0.215, 0.61, 0.355, 1);
+
   /* Z-index */
   --z-below:   -1;
   --z-illus:    0;
@@ -113,6 +137,9 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* clip (not hidden): kills horizontal scrollWidth from off-canvas
+     illustration start states without creating a scroll container */
+  overflow-x: clip;
 }
 
 body {
@@ -121,7 +148,7 @@ body {
   line-height: var(--leading-relaxed);
   color: var(--color-ink);
   background-color: var(--color-ground);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img, svg { display: block; max-width: 100%; }
@@ -143,13 +170,50 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 
+/* ─── 3b. SCROLL PROGRESS THREAD ───────────────────────────────── */
+
+.scroll-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  z-index: var(--z-nav);
+  pointer-events: none;
+}
+
+.scroll-progress__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-ink);
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0.25;
+}
+
+.scroll-progress__node {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent-1);
+  opacity: 0;
+  /* centering via margin, not transform — GSAP owns transform (y/scale) */
+  margin-left: -4px;
+}
+
+
 /* ─── 4. ILLUSTRATION OBJECTS ───────────────────────────────────── */
 
 .illus-obj {
   position: absolute;
   pointer-events: none;
   z-index: var(--z-illus);
-  will-change: transform;
 }
 
 /* Hide most illustrations on small screens to avoid clutter */
@@ -200,6 +264,23 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   letter-spacing: 0.02em;
   text-decoration: none;
   color: var(--color-ink);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.nav__thread {
+  display: block;
+  overflow: visible;
+}
+
+.nav--scrolled {
+  background: rgba(240,234,214,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--color-rule);
+  transition: background 0.3s var(--ease-snap), box-shadow 0.3s var(--ease-snap);
 }
 
 .nav__cta {
@@ -209,13 +290,19 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   color: var(--color-ink-muted);
   text-decoration: none;
   letter-spacing: var(--tracking-wide);
-  transition: color 0.2s;
+  transition: color 0.2s var(--ease-snap);
+  position: relative;
 }
 
-.nav__cta:hover,
-.nav__cta:focus-visible {
+.nav__cta:hover {
   color: var(--color-accent-1);
   outline: none;
+}
+
+.nav__cta:focus-visible {
+  color: var(--color-accent-1);
+  outline: 2px solid var(--color-accent-1);
+  outline-offset: 4px;
 }
 
 /* Mobile persistent CTA */
@@ -234,7 +321,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-medium);
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s var(--ease-snap), box-shadow 0.2s var(--ease-snap);
 }
 
 .mobile-cta:hover {
@@ -263,18 +350,24 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-radius: var(--radius-btn);
   padding: var(--space-4) var(--space-7);
   box-shadow: var(--shadow-stamp), var(--shadow-soft);
-  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  transition: background 0.2s var(--ease-snap), box-shadow 0.2s var(--ease-snap);
 }
 
-.cta-button:hover,
-.cta-button:focus-visible {
+.cta-button:hover {
   background: var(--color-accent-1-dark);
   box-shadow: var(--shadow-stamp), var(--shadow-medium);
   outline: none;
 }
 
+.cta-button:focus-visible {
+  background: var(--color-accent-1-dark);
+  box-shadow: var(--shadow-stamp), var(--shadow-medium);
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
 .cta-button:active {
-  transform: translateY(1px);
+  /* scale(0.97) owned by GSAP on desktop; this is touch/keyboard fallback */
   box-shadow: 1px 1px 0 rgba(44,31,14,0.20);
 }
 
@@ -309,9 +402,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border: 1.5px solid rgba(255,79,31,0.35);
   border-radius: var(--radius-full);
   padding: var(--space-1) var(--space-4);
-  transform: rotate(-1deg);
   box-shadow: var(--shadow-stamp);
   background: rgba(255,79,31,0.06);
+  /* rotation owned by GSAP */
 }
 
 .hero__headline {
@@ -352,9 +445,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
-  transform: rotate(-0.8deg);
   display: inline-block;
   margin-bottom: var(--space-7);
+  /* rotation owned by GSAP */
 }
 
 .recognition__head {
@@ -403,7 +496,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   color: var(--color-ink-muted);
   max-width: 600px;
   font-style: italic;
-  transform: rotate(-0.5deg);
+  /* rotation owned by GSAP */
 }
 
 
@@ -446,10 +539,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-radius: var(--radius-sm);
   padding: var(--space-5) var(--space-6);
   box-shadow: var(--shadow-stamp);
-  transform: rotate(-1.5deg);
   max-width: 400px;
   align-self: flex-end;
   margin-right: -24px;
+  /* rotation owned by GSAP */
 }
 
 .stat-callout__number {
@@ -481,7 +574,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .stat-callout {
     align-self: flex-start;
     margin-right: 0;
-    transform: rotate(-1deg);
   }
 }
 
@@ -505,9 +597,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   white-space: nowrap;
 }
 
-.marquee__track:hover {
-  animation-play-state: paused;
-}
+
 
 .marquee__content {
   font-family: var(--font-display);
@@ -545,7 +635,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-family: var(--font-body);
   font-size: var(--text-xl);
   font-style: italic;
-  color: var(--color-accent-1);
+  /* accent-1-dark: base orange is 4.2:1 — AA-large only; this line renders
+     at 20px regular on small screens, so it needs the darker token */
+  color: var(--color-accent-1-dark);
   margin-bottom: var(--space-8);
   font-weight: 400;
 }
@@ -569,23 +661,23 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .step--1 {
-  transform: rotate(-1deg);
   margin-left: 0;
   z-index: 3;
+  /* rotation owned by GSAP */
 }
 
 .step--2 {
-  transform: rotate(1.5deg);
   margin-left: clamp(20px, 8vw, 60px);
   margin-top: -16px;
   z-index: 2;
+  /* rotation owned by GSAP */
 }
 
 .step--3 {
-  transform: rotate(-1.5deg);
   margin-left: clamp(8px, 3vw, 24px);
   margin-top: -16px;
   z-index: 1;
+  /* rotation owned by GSAP */
 }
 
 .step__num {
@@ -663,35 +755,28 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   margin-bottom: var(--space-7);
 }
 
-.founder-quote::before {
-  content: '\201C';
+/* Quote marks are real <span> elements — targeted by GSAP for elastic entrance */
+.quote-mark {
   font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(6rem, 12vw, 9rem);
   line-height: 1;
-  color: var(--color-accent-1);
+  display: block;
   position: absolute;
-  top: -1rem;
-  left: clamp(-2rem, -5vw, -3.5rem);
-  transform: rotate(-6deg);
   pointer-events: none;
   user-select: none;
-  aria-hidden: true;
 }
 
-.founder-quote::after {
-  content: '\201D';
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(6rem, 12vw, 9rem);
-  line-height: 1;
+.quote-mark--open {
+  color: var(--color-accent-1);
+  top: -1rem;
+  left: clamp(-2rem, -5vw, -3.5rem);
+}
+
+.quote-mark--close {
   color: var(--color-accent-2);
-  position: absolute;
   bottom: -3rem;
   right: clamp(-2rem, -5vw, -3.5rem);
-  transform: rotate(6deg);
-  pointer-events: none;
-  user-select: none;
 }
 
 .founder-quote blockquote p {
@@ -737,10 +822,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border: 1.5px solid var(--color-rule);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-stamp);
-  transform: rotate(-0.8deg);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  /* rotation owned by GSAP */
 }
 
 .testimonial-placeholder__body {
@@ -801,6 +886,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  position: relative;
 }
 
 .form-group label {
@@ -819,7 +905,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-family: var(--font-body);
   font-size: var(--text-base);
   padding: var(--space-3) var(--space-4);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s var(--ease-snap), box-shadow 0.2s var(--ease-snap);
   outline: none;
   width: 100%;
 }
@@ -871,15 +957,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: rgba(107,85,64,0.4);
-  transition: color 0.2s, text-decoration-color 0.2s;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s var(--ease-snap);
 }
 
 .cta__fallback:hover {
   color: var(--color-ink);
-  text-decoration-color: rgba(44,31,14,0.5);
 }
 
 
@@ -905,6 +989,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   letter-spacing: 0.02em;
   text-decoration: none;
   color: var(--color-ink);
+  position: relative;
 }
 
 .footer__tagline {
@@ -932,11 +1017,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-radius: 2px;
 }
 
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--color-accent-1);
-  outline-offset: 4px;
-}
 
 
 /* ─── 17. RESPONSIVE — 640px ────────────────────────────────────── */
@@ -999,6 +1079,13 @@ button:focus-visible {
 
   .marquee__track { animation: none; }
 
+  /* Hide custom cursor and injected micro-interaction elements */
+  .cursor-dot,
+  .cursor-ring,
+  .link-ink,
+  .field-underline,
+  .field-check { display: none; }
+
   /* Ensure all GSAP start-state elements are visible */
   .hero__badge,
   .hero__headline,
@@ -1020,8 +1107,170 @@ button:focus-visible {
     transform: none !important;
   }
 
-  /* Restore intended rotations when transform override not active */
-  .stat-callout { transform: rotate(-1.5deg) !important; }
-  .hero__badge  { transform: rotate(-1deg) !important; }
+  /* Restore GSAP-owned decorative rotations as CSS fallbacks */
+  .hero__badge           { transform: rotate(-1deg) !important; }
+  .section-heading       { transform: rotate(-0.8deg) !important; }
+  .stat-callout          { transform: rotate(-1.5deg) !important; }
+  .step--1               { transform: rotate(-1deg) !important; }
+  .step--2               { transform: rotate(1.5deg) !important; }
+  .step--3               { transform: rotate(-1.5deg) !important; }
+  .recognition__close    { transform: rotate(-0.5deg) !important; }
   .testimonial-placeholder { transform: rotate(-0.8deg) !important; }
+}
+
+
+/* ─── 21. CUSTOM CURSOR ─────────────────────────────────────────── */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    margin-top: -4px;
+    margin-left: -4px;
+    will-change: transform;
+    transition: background-color 0.2s var(--ease-snap);
+  }
+
+  .cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-ink-muted);
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0;
+    margin-top: -16px;
+    margin-left: -16px;
+    will-change: transform;
+    transition: border-color 0.2s var(--ease-snap);
+  }
+
+  /* Orange node — the only new use of orange, interactive-state-only */
+  .cursor-dot.cursor--link  { background-color: var(--color-accent-1); }
+  .cursor-ring.cursor--link { border-color: var(--color-accent-1); }
+
+  body.has-custom-cursor,
+  body.has-custom-cursor * { cursor: none !important; }
+
+}
+
+
+/* ─── 22. LINK INK UNDERLINE ────────────────────────────────────── */
+
+.link-ink {
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 100%; height: 1px;
+  background: var(--color-ink-muted);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+
+/* ─── 23. FORM FIELD LIFE ───────────────────────────────────────── */
+
+.form-group label {
+  transition: color 0.25s var(--ease-snap);
+}
+
+.form-group:focus-within label {
+  color: var(--color-accent-1);
+}
+
+.field-underline {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent-1);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+  border-radius: 1px;
+}
+
+.field-check {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  color: var(--color-accent-2);
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  /* scale(0) initial state set and managed entirely by GSAP */
+}
+
+
+/* ─── 24. CHOREOGRAPHY ADDITIONS (v5) ──────────────────────────── */
+
+/* Scroll progress — JS-owned; disable CSS transition so GSAP has clean control */
+.scroll-progress__node {
+  transition: none;
+}
+
+/* Hide scroll thread on mobile — 2px rail clutters small screens */
+@media (max-width: 767px) {
+  .scroll-progress { display: none; }
+}
+
+/* Line-mask: overflow container injected by SplitText line-reveal helper */
+.line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+/* page-level positioning for cross-boundary parallax objects */
+main {
+  position: relative;
+}
+
+.boundary-obj {
+  position: absolute;
+  pointer-events: none;
+  z-index: var(--z-illus);
+}
+
+/* Hide boundary objects on mobile (illus-obj rule already hides, belt-and-suspenders) */
+@media (max-width: 767px) {
+  .boundary-obj { display: none; }
+}
+
+/* How It Works — give the section a minimum height so GSAP pin spacer
+   has real content to measure before inserting its spacer div */
+.section-how {
+  min-height: 100svh;
+}
+
+/* Connector thread is decorative overlay — out of flow, sized by JS
+   to span the steps stack (was in-flow, creating a 300px dead gap) */
+.steps-thread {
+  position: absolute;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .steps-thread { display: none; }
+}
+
+/* Reduced-motion additions for v5 elements */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { display: none; }
+  .boundary-obj { display: none; }
+  .quote-mark--open,
+  .quote-mark--close { opacity: 1 !important; transform: none !important; }
+  .recognition-sticky { opacity: 1 !important; transform: none !important; }
+  /* Step doodle paths: ensure strokes are fully visible without GSAP */
+  .step__doodle-path,
+  .steps-thread-path {
+    stroke-dashoffset: 0 !important;
+  }
 }

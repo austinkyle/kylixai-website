@@ -38,14 +38,31 @@
   <!-- Fonts: Playfair Display (display) + Lora (body) via Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" />
+  <!-- Non-blocking font CSS: metric-matched Georgia fallbacks (main.css §0)
+       carry first paint, so the swap is CLS-safe -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Lora:ital,wght@0,400;0,500;1,400&display=swap"
+        media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" />
+  </noscript>
 
-  <link rel="stylesheet" href="main.css?v=3" />
+  <link rel="stylesheet" href="main.css?v=6" />
 </head>
 <body>
 
+  <!-- Custom cursor (desktop pointer devices only) -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
   <!-- Grain overlay -->
   <div class="grain" aria-hidden="true"></div>
+
+  <!-- Scroll progress thread -->
+  <div class="scroll-progress" aria-hidden="true">
+    <div class="scroll-progress__fill"></div>
+    <div class="scroll-progress__node"></div>
+  </div>
 
   <!-- Illustration sprite -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
@@ -112,25 +129,6 @@
       <line x1="20" y1="64" x2="78" y2="65" stroke="#F8F4EC" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
     </symbol>
 
-    <!-- Calendar page -->
-    <symbol id="illus-calendar" viewBox="0 0 100 100">
-      <path d="M9,22 L91,21 L93,93 L7,94 Z"
-            fill="#E8DEC5" stroke="#6B5540" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M9,22 L91,21 L91,40 L9,41 Z" fill="#5C8C4E" stroke="none"/>
-      <circle cx="30" cy="17" r="5" fill="#F0EAD6" stroke="#6B5540" stroke-width="2"/>
-      <circle cx="70" cy="17" r="5" fill="#F0EAD6" stroke="#6B5540" stroke-width="2"/>
-      <line x1="30" y1="10" x2="30" y2="22" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="70" y1="10" x2="70" y2="22" stroke="#6B5540" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="32" y1="53" x2="32" y2="87" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
-      <line x1="52" y1="53" x2="52" y2="87" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
-      <line x1="72" y1="53" x2="72" y2="87" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
-      <line x1="12" y1="60" x2="88" y2="60" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
-      <line x1="12" y1="73" x2="88" y2="73" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
-      <line x1="12" y1="86" x2="88" y2="86" stroke="#6B5540" stroke-width="1" opacity="0.35"/>
-      <line x1="56" y1="74" x2="68" y2="86" stroke="#FF4F1F" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="68" y1="74" x2="56" y2="86" stroke="#FF4F1F" stroke-width="2.5" stroke-linecap="round"/>
-    </symbol>
-
     <!-- Gear -->
     <symbol id="illus-gear" viewBox="0 0 100 100">
       <path d="M42,8 L48,8 L52,16 C57,15 62,16 67,18 L73,12 L78,17 L74,24
@@ -192,7 +190,14 @@
 
   <!-- Corner navigation -->
   <nav class="nav" id="nav" role="navigation" aria-label="Main">
-    <a class="nav__wordmark" href="#top" aria-label="KylixAI — return to top">KylixAI</a>
+    <a class="nav__wordmark" href="#top" aria-label="KylixAI — return to top">
+      <span class="nav__wordmark-text">KylixAI</span>
+      <svg class="nav__thread" aria-hidden="true" viewBox="0 0 80 12" width="80" height="12" fill="none">
+        <path class="nav__thread-path"
+              d="M2,6 C10,2 18,10 26,6 C34,2 42,10 50,6 C58,2 66,10 74,6 C76,5 78,5 80,6"
+              stroke="#6B5540" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
     <a class="nav__cta" href="#audit">Book free audit</a>
   </nav>
 
@@ -216,10 +221,6 @@
       <div class="illus-obj layer-front" id="hero-coffee" style="bottom:18%;right:4%;transform:rotate(-4deg)" aria-hidden="true">
         <svg width="80" height="80"><use href="#illus-coffee-cup"/></svg>
       </div>
-      <div class="illus-obj layer-mid" id="hero-sticky" style="top:42%;right:6%;transform:rotate(-15deg);opacity:0.7" aria-hidden="true">
-        <svg width="65" height="65"><use href="#illus-sticky-note"/></svg>
-      </div>
-
       <div class="container hero__inner">
         <span class="hero__badge" aria-label="Free audit — zero risk">Free audit — zero risk</span>
 
@@ -245,20 +246,31 @@
     <!-- ─── 2. RECOGNITION ───────────────────────────────────────── -->
     <section class="section section-recognition" id="recognition" aria-labelledby="recognition-heading">
 
-      <div class="illus-obj layer-back" style="top:-3%;right:2%;transform:rotate(6deg)" aria-hidden="true">
-        <svg width="85" height="85"><use href="#illus-calendar"/></svg>
+      <!-- Sticky-note scatter — start off-canvas, JS animates in -->
+      <div class="illus-obj layer-mid recognition-sticky recognition-sticky--1"
+           style="top:15%;left:8%;transform:rotate(-12deg)" aria-hidden="true" data-hover="lift">
+        <svg width="60" height="60"><use href="#illus-sticky-note"/></svg>
       </div>
-      <div class="illus-obj layer-front recognition-gear" style="top:36%;right:-1%;transform:rotate(18deg)" aria-hidden="true">
+      <div class="illus-obj layer-back recognition-sticky recognition-sticky--2"
+           style="top:5%;right:7%;transform:rotate(8deg)" aria-hidden="true" data-hover="lift">
+        <svg width="70" height="70"><use href="#illus-sticky-note"/></svg>
+      </div>
+      <div class="illus-obj layer-back recognition-sticky recognition-sticky--4"
+           style="bottom:10%;left:6%;transform:rotate(10deg)" aria-hidden="true" data-hover="lift">
+        <svg width="65" height="65"><use href="#illus-sticky-note"/></svg>
+      </div>
+
+      <div class="illus-obj layer-front recognition-gear" style="top:36%;right:-1%;transform:rotate(18deg)" aria-hidden="true" data-hover="shake">
         <svg width="75" height="75"><use href="#illus-gear"/></svg>
       </div>
-      <div class="illus-obj layer-back" style="bottom:3%;left:0%;transform:rotate(-8deg);opacity:0.7" aria-hidden="true">
+      <div class="illus-obj layer-back" style="bottom:3%;left:0%;transform:rotate(-8deg);opacity:0.7" aria-hidden="true" data-hover="shake">
         <svg width="85" height="85"><use href="#illus-dog-leash-tangled"/></svg>
       </div>
 
       <div class="container">
         <div class="recognition__head">
           <h2 id="recognition-heading" class="section-heading">Sound familiar?</h2>
-          <div class="illus-obj layer-mid envelope-float" style="transform:rotate(-3deg)" aria-hidden="true">
+          <div class="illus-obj layer-mid envelope-float" style="transform:rotate(-3deg)" aria-hidden="true" data-hover="lift">
             <svg width="65" height="65"><use href="#illus-envelope"/></svg>
           </div>
         </div>
@@ -282,13 +294,9 @@
     <!-- ─── 3. REFRAME ───────────────────────────────────────────── -->
     <section class="section section-reframe" id="reframe" aria-labelledby="reframe-heading">
 
-      <div class="illus-obj layer-mid" style="top:-4%;left:-1%;transform:rotate(-10deg);opacity:0.75" aria-hidden="true">
+      <div class="illus-obj layer-mid" id="reframe-invoice" style="top:-4%;left:-1%;transform:rotate(-10deg);opacity:0.75" aria-hidden="true" data-hover="flutter">
         <svg width="85" height="85"><use href="#illus-invoice"/></svg>
       </div>
-      <div class="illus-obj layer-back" style="bottom:4%;right:2%;transform:rotate(4deg);opacity:0.55" aria-hidden="true">
-        <svg width="75" height="75"><use href="#illus-coffee-cup"/></svg>
-      </div>
-
       <div class="container">
         <div class="reframe__inner">
           <h2 id="reframe-heading">What if your business<br>actually ran itself?</h2>
@@ -327,16 +335,16 @@
       </div>
     </div>
 
+    <!-- Cross-boundary: invoice drifts Reframe → How It Works at slower parallax -->
+    <div class="illus-obj boundary-obj layer-back" id="boundary-invoice"
+         aria-hidden="true" style="left:3%;transform:rotate(-10deg);opacity:0.55">
+      <svg width="75" height="75"><use href="#illus-invoice"/></svg>
+    </div>
+
     <!-- ─── 4. HOW IT WORKS ──────────────────────────────────────── -->
     <section class="section section-how" id="how" aria-labelledby="how-heading">
 
-      <div class="illus-obj layer-back" style="top:-3%;left:2%;transform:rotate(-5deg);opacity:0.8" aria-hidden="true">
-        <svg width="70" height="70"><use href="#illus-sticky-note"/></svg>
-      </div>
-      <div class="illus-obj layer-back" style="top:-3%;right:3%;transform:rotate(9deg);opacity:0.8" aria-hidden="true">
-        <svg width="65" height="65"><use href="#illus-sticky-note"/></svg>
-      </div>
-      <div class="illus-obj layer-mid" style="top:52%;right:-2%;transform:rotate(8deg)" aria-hidden="true">
+      <div class="illus-obj layer-mid" style="top:52%;right:-2%;transform:rotate(8deg)" aria-hidden="true" data-hover="lift">
         <svg width="80" height="80"><use href="#illus-checkmark"/></svg>
       </div>
 
@@ -344,8 +352,22 @@
         <h2 id="how-heading">How it works</h2>
         <p class="how__guarantee">The goal is simple: every automation pays for itself.</p>
 
+        <!-- Connector thread: draws progressively as each step activates in pinned scene -->
+        <svg class="steps-thread" aria-hidden="true" viewBox="0 0 20 300"
+             width="20" height="300" fill="none" preserveAspectRatio="none">
+          <path class="steps-thread-path"
+                d="M10,0 C6,30 14,70 10,110 C6,150 14,190 10,230 C8,260 10,285 10,300"
+                stroke="#6B5540" stroke-width="1.5" stroke-linecap="round"
+                opacity="0.4"/>
+        </svg>
+
         <ol class="steps" role="list">
           <li class="step step--1">
+            <svg class="step__doodle" aria-hidden="true" viewBox="0 0 60 16" width="60" height="16" fill="none">
+              <path class="step__doodle-path"
+                    d="M2,8 C8,3 16,13 24,8 C32,3 40,13 48,8 C52,5.5 56,7 58,8"
+                    stroke="#5C8C4E" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
             <div class="step__num step__num--green" aria-hidden="true">01</div>
             <h3 class="step__label">We find the waste.</h3>
             <p class="step__desc">
@@ -356,6 +378,11 @@
           </li>
 
           <li class="step step--2">
+            <svg class="step__doodle" aria-hidden="true" viewBox="0 0 60 16" width="60" height="16" fill="none">
+              <path class="step__doodle-path"
+                    d="M2,8 C8,3 16,13 24,8 C32,3 40,13 48,8 C52,5.5 56,7 58,8"
+                    stroke="#FF4F1F" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
             <div class="step__num step__num--orange" aria-hidden="true">02</div>
             <h3 class="step__label">We show you the numbers.</h3>
             <p class="step__desc">
@@ -366,6 +393,11 @@
           </li>
 
           <li class="step step--3">
+            <svg class="step__doodle" aria-hidden="true" viewBox="0 0 60 16" width="60" height="16" fill="none">
+              <path class="step__doodle-path"
+                    d="M2,8 C8,3 16,13 24,8 C32,3 40,13 48,8 C52,5.5 56,7 58,8"
+                    stroke="#5C8C4E" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
             <div class="step__num step__num--green" aria-hidden="true">03</div>
             <h3 class="step__label">We build it. You approve it.</h3>
             <p class="step__desc">
@@ -381,14 +413,11 @@
     <!-- ─── 5. PROOF ─────────────────────────────────────────────── -->
     <section class="section section-proof" id="proof" aria-labelledby="proof-heading">
 
-      <div class="illus-obj layer-back" style="bottom:6%;left:2%;transform:rotate(3deg);opacity:0.75" aria-hidden="true">
-        <svg width="75" height="75"><use href="#illus-envelope"/></svg>
-      </div>
-
       <div class="container">
         <h2 id="proof-heading">Why trust us?</h2>
 
         <figure class="founder-quote">
+          <span class="quote-mark quote-mark--open" aria-hidden="true">&ldquo;</span>
           <blockquote>
             <p>
               I've spent over 20 years building and running businesses — not advising
@@ -403,6 +432,7 @@
               and fixes it — with skin in the game.
             </p>
           </blockquote>
+          <span class="quote-mark quote-mark--close" aria-hidden="true">&rdquo;</span>
           <figcaption class="founder-quote__attr">
             <span class="founder-quote__name">Austin Kyle</span>
             <span class="founder-quote__title">Founder, KylixAI</span>
@@ -422,9 +452,6 @@
     <!-- ─── 6. CTA / FORM ────────────────────────────────────────── -->
     <section class="section section-cta" id="audit" aria-labelledby="cta-heading">
 
-      <div class="illus-obj layer-back" style="top:6%;right:5%;transform:rotate(10deg);opacity:0.45" aria-hidden="true">
-        <svg width="60" height="60"><use href="#illus-alarm-clock"/></svg>
-      </div>
       <div class="illus-obj layer-mid" style="bottom:8%;right:4%;transform:rotate(-6deg)" aria-hidden="true">
         <svg width="90" height="90"><use href="#illus-dog-leash-free"/></svg>
       </div>
@@ -539,6 +566,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
 
-  <script src="main.js?v=3"></script>
+  <script src="main.js?v=7"></script>
 </body>
 </html>
