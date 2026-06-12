@@ -1137,6 +1137,17 @@
       submitBtn.disabled    = true;
 
       const formData = new FormData(form);
+
+      /* Require a solved captcha — Web3Forms accepts token-less posts,
+         so the gate has to live here */
+      const captchaToken = formData.get('h-captcha-response');
+      if (!captchaToken) {
+        showFormError('Please tick the captcha box first.');
+        submitBtn.textContent = originalLabel;
+        submitBtn.disabled    = false;
+        return;
+      }
+
       const payload  = JSON.stringify(Object.fromEntries(formData));
 
       try {

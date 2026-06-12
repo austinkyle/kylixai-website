@@ -48,10 +48,12 @@ the 5-second test.
 
 ## Phase 2 — Integrity
 
-- **Form**: hCaptcha widget renders and injects its token field; unsolved-captcha
-  submit fails closed with the friendly error. Server-side POST correctly rejected
-  by Web3Forms (client-origin only). Full solved-captcha E2E only possible on the
-  real domain — verified post-deploy.
+- **Form**: hCaptcha widget renders and injects its token field. Live E2E
+  submission succeeded (two test emails sent). **Finding**: Web3Forms accepted
+  posts with an empty `h-captcha-response` — captcha was not enforced anywhere.
+  Fixed client-side (handler now requires a solved captcha before posting).
+  **Recommended user action**: also enable hCaptcha enforcement in the Web3Forms
+  dashboard so direct-to-API spam is rejected server-side.
 - **Keyboard**: logical tab order (nav → hero CTA → form → captcha → submit →
   fallback → footer), visible focus rings throughout, nothing trapped behind the
   pin (pinned section contains no focusables), anchors land correctly.
