@@ -379,7 +379,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   .nav__dropdown-link { font-size: var(--text-base); min-height: 44px; display: flex; align-items: center; }
 
   .nav__cta {
-    margin-top: auto;
+    margin-top: var(--space-6);
     justify-content: center;
     min-height: 52px;
     font-size: var(--text-base);
