@@ -27,3 +27,16 @@ desktop.ini
 # ─── Node (if tooling added later) ─────────────────────────
 node_modules/
 npm-debug.log*
+
+# ─── Claude Code local settings ────────────────────────────
+.claude/
+
+# ─── Internal workspace notes referencing the reference site ─
+# (planning/content docs only — never part of the live build)
+/PRODUCT.md
+/design/tokens/token-colors-v3.0.md
+/content/copy/copy-apps-final-v1.0.md
+/content/copy/copy-about-final-v1.0.md
+/content/copy/copy-services-final-v1.0.md
+/content/copy/copy-resources-final-v1.0.md
+/content/copy/copy-home-final-v1.0.md

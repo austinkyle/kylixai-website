@@ -253,3 +253,39 @@ The Current — shipped parameters: 520/220 particles (desktop/mobile), alpha 0.
 point 12/7.5 px × dpr, colours 60% ink-ghost / 39% ink-muted / 0.8% accent-1,
 degradation ladder 45/30/20 fps → 60% / 35%+round×0.6 / teardown. Diagnostics:
 `window.__kylixCurrentDebug`.
+
+---
+
+## v4 — The Living Thread field (`build/src/thread-field.js`)
+
+Canvas filament system mounted on every `<canvas class="hero__field">` — full intensity on Home
+and Services (real `.hero`), reduced intensity (`data-intensity="interior"`, 0.5× filament count)
+on the shorter `.section.section--dark` intro bands of Apps/About/Resources, which share
+`position: relative` with `.hero` so the absolutely-positioned canvas sizes correctly against
+either parent.
+
+**System**: N horizontal quadratic-spline filaments (26/40/60 at ≤480/≤900/>900px, halved on
+interior pages), 1px stroke in `--color-bronze` at 8–22% alpha, ~1-in-6 "hot" filaments in
+`--color-accent` with a travelling glow node. A second offscreen canvas holds a blurred copy of
+the hot filaments only, composited back with `globalCompositeOperation: 'lighter'` at 55% alpha
+for the bloom — this is the one deliberate GPU/battery spend the user explicitly authorized in
+trade for visual impact.
+
+**Interaction parity (desktop ≡ mobile, by design)**: both platforms drive the same
+`fieldDisplacement(x, y)` falloff function (radius 180px, `(1 - d/r)²` falloff, ±26px lateral
+push). Desktop supplies `pointerX/Y` via `mousemove` (gated `(hover: hover) and (pointer: fine)`);
+mobile supplies the same coordinates via `touchmove`, plus a low-pass-filtered
+`deviceorientation` gamma/beta tilt blended into every filament's y-offset — gated behind the
+iOS 13+ permission gesture (`DeviceOrientationEvent.requestPermission()` on first `touchend`),
+falling back to autonomous drift + touch response if denied or unsupported.
+
+**Degradation ladder** (frame-time guard, rolling 45-frame average): first the bloom pass is
+dropped, then filaments shed in steps of 6 down to a floor of 14 — degraded, never disabled.
+Lifecycle: `IntersectionObserver` pauses the rAF loop when the canvas leaves the viewport;
+`visibilitychange` pauses on tab blur; `prefers-reduced-motion: reduce` removes the canvas
+entirely (`boot()` in `thread-field.js`) in favour of the static CSS ember-glow fallback already
+present on `.hero__glow`.
+
+**Load choreography**: `introProgress` eases 0–1 over 900ms with a cubic-out curve, driving both
+the filaments' draw-in and their displacement responsiveness — nothing bends toward the pointer
+until the intro settles, so the field never looks like it's fighting the entrance.
