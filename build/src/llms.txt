@@ -7,7 +7,7 @@ KylixAI is a small applied-AI studio serving small-to-mid-size business owners, 
 ## Services
 
 - [Development](https://kylixai.com/services-development.html): Custom AI agents, automations, and full-stack apps, from landing pages to complex applications. Landing pages typically start around $3k, custom applications start around $15k, AI agent builds are quoted per project.
-- [AI & Automation](https://kylixai.com/services-automation.html): Custom AI agents built end-to-end on KylixAI's own stack and deployed into a client's infrastructure — no third-party SaaS wrapper. Implementations start around $10k for a focused single-channel agent.
+- [AI & Automation](https://kylixai.com/services-automation.html): Custom AI agents built end-to-end on KylixAI's own stack and deployed into a client's infrastructure — no third-party SaaS wrapper. A simple single-task agent install starts at $1,000; a fully custom, multi-channel agent build starts around $10k.
 - [Consulting](https://kylixai.com/services-consulting.html): Strategic consulting, AI training, hourly consulting ($350/hr), coaching ($500/mo), and training (from $250/session). Also offers fractional CTO/PM engagements.
 - [Services overview](https://kylixai.com/services.html): Summary of all three service lines.
 

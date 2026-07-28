@@ -86,7 +86,7 @@ No exceptions — this is the full quality bar for v1 launch.
 - [ ] sitemap.xml lists all 8 pages, not just the homepage
 - [ ] robots.txt explicitly allows GPTBot, ChatGPT-User, ClaudeBot, anthropic-ai, PerplexityBot, Google-Extended, CCBot, Bingbot
 - [ ] `og:site_name` and `meta name="robots"` present on all 8 pages
-- [ ] Pricing figures are consistent across every page and schema block that states them (flag and resolve any conflicts before launch — see `deploy/seo/seo-config-v1.1.md` "Known issue")
+- [ ] Pricing figures are consistent across every page and schema block that states them (see `deploy/seo/seo-config-v1.1.md` "Structured Data & AEO" — Automation is intentionally two tiers, $1k and $10k)
 
 ---
 

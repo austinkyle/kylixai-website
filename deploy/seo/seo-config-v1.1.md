@@ -115,12 +115,12 @@ Added in this pass to make the site citable by LLM answer engines (ChatGPT, Clau
 | services.html | + `BreadcrumbList`, `Service` with `OfferCatalog` linking to the 3 sub-services |
 | services-development.html | + `BreadcrumbList`, `Service` with `AggregateOffer` ($3k–$15k+), `FAQPage` (7 Q&As) |
 | services-consulting.html | + `BreadcrumbList`, `Service` with `OfferCatalog` (hourly $350, coaching $500/mo, training $250/session), `FAQPage` (7 Q&As) |
-| services-automation.html | + `BreadcrumbList`, `Service` with `Offer` ($10k), `FAQPage` (7 Q&As) |
+| services-automation.html | + `BreadcrumbList`, `Service` with `AggregateOffer` ($1k–$10k, two tiers), `FAQPage` (7 Q&As) |
 | apps.html, resources.html | Organization schema only — no `SoftwareApplication`/`ItemList` schema yet (deferred; would need re-verified per-app details first) |
 
 **Rule enforced throughout:** every `FAQPage` question/answer string is copied verbatim from the page's own visible `<details>` markup — structured data must match on-page text exactly, or it actively hurts trust with answer engines instead of helping.
 
-**Known issue to resolve before/at launch:** `services.html`'s pricing card lists the Automation offering as "Starting at $1,000," while `services-automation.html`'s own FAQ copy says implementations "start around $10k for a focused single-channel agent." These are two different real numbers for the same offering on two live pages. The schema on each page currently reflects that page's own displayed number ($1,000 on services.html's `Service.hasOfferCatalog`, $10,000 on services-automation.html's `Service.offers`) rather than picking one — but the underlying content conflict is a truthfulness problem independent of schema and should be reconciled by whoever owns pricing.
+**Resolved:** `services.html`'s "Starting at $1,000" and `services-automation.html`'s "$10k" were originally two contradictory numbers for the same offering. Reconciled as two explicit tiers — a $1,000 single-task agent install and a $10k+ fully custom multi-channel build — with matching copy and an `AggregateOffer` (lowPrice $1,000 / highPrice $10,000) on `services-automation.html`, and a clarifying bullet on `services.html`'s pricing card pointing to the higher tier.
 
 **llms.txt:** live at `build/src/llms.txt` — the emerging llms.txt convention (llmstxt.org-style). H1 site name, one-line summary, linked sections for Services/About/Apps/Resources, and a short "facts for citation" list. Sourced only from already-established copy, no new claims.
 

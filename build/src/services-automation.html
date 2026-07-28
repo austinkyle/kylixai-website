@@ -62,10 +62,12 @@
     "areaServed": "US",
     "description": "Custom AI agents that handle business operations, outreach, content, research, and more — built end-to-end and deployed into your infrastructure.",
     "offers": {
-      "@type": "Offer",
-      "price": "10000",
+      "@type": "AggregateOffer",
       "priceCurrency": "USD",
-      "description": "Implementations start around $10k for a focused single-channel agent and scale based on integrations, custom skills, and infrastructure scope."
+      "lowPrice": "1000",
+      "highPrice": "10000",
+      "offerCount": "2",
+      "description": "A simple single-task agent install starts at $1,000. A fully custom, multi-channel agent build starts around $10,000 and scales based on integrations, custom skills, and infrastructure scope."
     }
   }
   </script>
@@ -81,7 +83,7 @@
       {"@type": "Question", "name": "Which channels and tools can the agent operate in?", "acceptedAnswer": {"@type": "Answer", "text": "Slack, Discord, WhatsApp, Telegram, Microsoft Teams, iMessage, Signal, Matrix, email, and more — we treat every channel as one unified inbox. For tools, we integrate with whatever your team already uses: HubSpot, Salesforce, Notion, Linear, GitHub, Google Workspace, and most APIs."}},
       {"@type": "Question", "name": "Do you handle hosting and infrastructure, or do we?", "acceptedAnswer": {"@type": "Answer", "text": "Your choice. We can deploy on our managed infrastructure with monitoring, security hardening, and 24/7 uptime, or we can deploy into your own cloud account if you have data residency or compliance requirements. Either way, you own the deployment."}},
       {"@type": "Question", "name": "What about data privacy and security?", "acceptedAnswer": {"@type": "Answer", "text": "Customer data never leaves the infrastructure you control. We use enterprise model providers with no-training agreements (Anthropic, OpenAI, Google), secrets are stored in managed key vaults, and every agent ships with audit logging. Happy to sign an NDA before discovery."}},
-      {"@type": "Question", "name": "How much does an agent implementation cost?", "acceptedAnswer": {"@type": "Answer", "text": "Implementations start around $10k for a focused single-channel agent and scale based on integrations, custom skills, and infrastructure scope. Most engagements include a 1-hour training session, 4 custom help guides, and 7 days of post-launch support. Send us a quote request for a fixed price."}},
+      {"@type": "Question", "name": "How much does an agent implementation cost?", "acceptedAnswer": {"@type": "Answer", "text": "A simple single-task agent install starts at $1,000. A fully custom, multi-channel agent build starts around $10k and scales based on integrations, custom skills, and infrastructure scope. Most engagements include a 1-hour training session, 4 custom help guides, and 7 days of post-launch support. Send us a quote request for a fixed price."}},
       {"@type": "Question", "name": "What happens after launch — do you stick around?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Most clients keep us on a monthly retainer for ongoing skill development, new integrations, performance tuning, and incident response. Agents need care like any other production system; we are happy to be the team that provides it."}}
     ]
   }
@@ -380,7 +382,7 @@
           </details>
           <details class="faq__item">
             <summary>How much does an agent implementation cost?</summary>
-            <p class="faq__body">Implementations start around $10k for a focused single-channel agent and scale based on integrations, custom skills, and infrastructure scope. Most engagements include a 1-hour training session, 4 custom help guides, and 7 days of post-launch support. Send us a quote request for a fixed price.</p>
+            <p class="faq__body">A simple single-task agent install starts at $1,000. A fully custom, multi-channel agent build starts around $10k and scales based on integrations, custom skills, and infrastructure scope. Most engagements include a 1-hour training session, 4 custom help guides, and 7 days of post-launch support. Send us a quote request for a fixed price.</p>
           </details>
           <details class="faq__item">
             <summary>What happens after launch — do you stick around?</summary>
