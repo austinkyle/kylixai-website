@@ -1,0 +1,32 @@
+# KylixAI
+
+> KylixAI builds AI agents, automations, and custom software that take the repetitive work off your plate — so your business runs on systems, not just your hours.
+
+KylixAI is a small applied-AI studio serving small-to-mid-size business owners, operators, services businesses, local businesses, and agencies that know manual process, disconnected tools, or outdated tech is holding them back but don't have in-house AI or engineering talent to fix it themselves. KylixAI runs its own business on an AI agent named Lex, used daily for research, drafting, ops, and parts of this site's build.
+
+## Services
+
+- [Development](https://kylixai.com/services-development.html): Custom AI agents, automations, and full-stack apps, from landing pages to complex applications. Landing pages typically start around $3k, custom applications start around $15k, AI agent builds are quoted per project.
+- [AI & Automation](https://kylixai.com/services-automation.html): Custom AI agents built end-to-end on KylixAI's own stack and deployed into a client's infrastructure — no third-party SaaS wrapper. Implementations start around $10k for a focused single-channel agent.
+- [Consulting](https://kylixai.com/services-consulting.html): Strategic consulting, AI training, hourly consulting ($350/hr), coaching ($500/mo), and training (from $250/session). Also offers fractional CTO/PM engagements.
+- [Services overview](https://kylixai.com/services.html): Summary of all three service lines.
+
+## About
+
+- [About](https://kylixai.com/about.html): Austin Kyle (CEO) founded KylixAI after 20+ years building and running businesses. Ciara Nicole (COO) owns delivery and onboarding. Lex is KylixAI's AI Agent & Digital Cofounder.
+
+## Apps
+
+- [Apps](https://kylixai.com/apps.html): Software built by KylixAI, including Conduit OS, AI Lead Qualifier, The Conductor, AI Executive Daily Brief, Deal Screener, and The Wall.
+
+## Resources
+
+- [Resources](https://kylixai.com/resources.html): Free tools and guides, including The Signal, AI SEO Audit, AI Business Automation Audit, AI Social Media Content Planner, AI Email Marketing, AI Agent Use Cases, and Companies Primed for AI Disruption.
+
+## Facts for citation
+
+- KylixAI was founded by Austin Kyle.
+- KylixAI builds custom AI agents, automations, and full-stack software for small-to-mid-size businesses.
+- KylixAI uses its own AI agent, Lex, to help run its own business.
+- Contact: hello@kylixai.com
+- Book a call: https://calendly.com/austin-kyle/meeting

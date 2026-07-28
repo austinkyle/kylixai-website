@@ -11,8 +11,10 @@
   <link rel="icon" href="assets/favicon/kylix-favicon-16x16.png" sizes="16x16" type="image/png" />
   <link rel="apple-touch-icon" href="assets/favicon/kylix-favicon-512x512.png" />
 
+  <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://kylixai.com/services-development.html" />
+  <meta property="og:site_name" content="KylixAI" />
   <meta property="og:title" content="Development — KylixAI" />
   <meta property="og:description" content="Custom AI agents, automations, and full-stack apps — from landing pages to complex applications. We handle projects of all sizes." />
   <meta property="og:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
@@ -20,6 +22,72 @@
   <meta name="twitter:title" content="Development — KylixAI" />
   <meta name="twitter:description" content="Custom AI agents, automations, and full-stack apps — from landing pages to complex applications. We handle projects of all sizes." />
   <meta name="twitter:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
+
+  <!-- @partial:schema-org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kylixai.com/#organization",
+    "name": "KylixAI",
+    "url": "https://kylixai.com/",
+    "logo": "https://kylixai.com/assets/favicon/kylix-favicon-512x512.png",
+    "image": "https://kylixai.com/assets/kylix-og-image-dark-1200x630.png",
+    "description": "KylixAI builds AI agents, automations, and custom software that take the repetitive work off your plate — so your business runs on systems, not just your hours.",
+    "email": "hello@kylixai.com",
+    "sameAs": ["https://austinkyle.substack.com/subscribe"]
+  }
+  </script>
+  <!-- @partial:schema-org:end -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://kylixai.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://kylixai.com/services.html"},
+      {"@type": "ListItem", "position": 3, "name": "Development", "item": "https://kylixai.com/services-development.html"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Custom Development",
+    "serviceType": "Custom AI Agent, Automation, and Full-Stack Application Development",
+    "provider": { "@id": "https://kylixai.com/#organization" },
+    "areaServed": "US",
+    "description": "Custom AI agents, automations, and full-stack apps — from landing pages to complex applications. We handle projects of all sizes.",
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "USD",
+      "lowPrice": "3000",
+      "highPrice": "15000",
+      "offerCount": "3",
+      "description": "Landing pages typically start around $3k, custom applications start around $15k, and AI agent builds are quoted per project."
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "What kind of projects do you take on?", "acceptedAnswer": {"@type": "Answer", "text": "Anything from a single landing page to a full SaaS product. Most of our work is custom web apps, AI agents and automations, and integrations between tools. If it involves shipping working software, we are probably a fit."}},
+      {"@type": "Question", "name": "How long does a typical build take?", "acceptedAnswer": {"@type": "Answer", "text": "A focused landing page or marketing site usually takes 2 to 4 weeks. A custom application or AI agent is typically 6 to 12 weeks depending on scope. We scope every project up front so you know the timeline before we start."}},
+      {"@type": "Question", "name": "Do you work with agencies or offer white-label development?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We act as a technical partner for agencies, consultancies, and studios that need extra capacity or deep AI expertise. We can work under your brand, attend client calls, or stay fully behind the scenes."}},
+      {"@type": "Question", "name": "What is your tech stack?", "acceptedAnswer": {"@type": "Answer", "text": "React, Next.js, TypeScript, and Node.js for most builds. Postgres for data, Cloud Run and Vercel for deploys. For AI work we use the major model providers (Anthropic, OpenAI, Google) and pick the right one per task. We use the tools that ship, not the ones that look good on a slide."}},
+      {"@type": "Question", "name": "Do you offer ongoing support after launch?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We stay on as your long-term technical partner: new features, performance work, monitoring, and incident response. Most clients keep us on a monthly retainer after the initial build."}},
+      {"@type": "Question", "name": "How much does a project cost?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on scope, but landing pages typically start around $3k, custom applications start around $15k, and AI agent builds are quoted per project. Send us a quote request and we will come back with a fixed price and timeline within 48 hours."}},
+      {"@type": "Question", "name": "Can you take over a project someone else started?", "acceptedAnswer": {"@type": "Answer", "text": "Often, yes. We do a short technical audit first to make sure the codebase is in a state we can build on. If it is not, we will tell you straight and recommend a rebuild path rather than dragging out a doomed handoff."}}
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">

@@ -11,8 +11,10 @@
   <link rel="icon" href="assets/favicon/kylix-favicon-16x16.png" sizes="16x16" type="image/png" />
   <link rel="apple-touch-icon" href="assets/favicon/kylix-favicon-512x512.png" />
 
+  <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://kylixai.com/services-consulting.html" />
+  <meta property="og:site_name" content="KylixAI" />
   <meta property="og:title" content="Consulting — KylixAI" />
   <meta property="og:description" content="Strategic consulting, AI training, and hands-on coaching. Expert guidance, when you need it." />
   <meta property="og:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
@@ -20,6 +22,73 @@
   <meta name="twitter:title" content="Consulting — KylixAI" />
   <meta name="twitter:description" content="Strategic consulting, AI training, and hands-on coaching. Expert guidance, when you need it." />
   <meta name="twitter:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
+
+  <!-- @partial:schema-org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kylixai.com/#organization",
+    "name": "KylixAI",
+    "url": "https://kylixai.com/",
+    "logo": "https://kylixai.com/assets/favicon/kylix-favicon-512x512.png",
+    "image": "https://kylixai.com/assets/kylix-og-image-dark-1200x630.png",
+    "description": "KylixAI builds AI agents, automations, and custom software that take the repetitive work off your plate — so your business runs on systems, not just your hours.",
+    "email": "hello@kylixai.com",
+    "sameAs": ["https://austinkyle.substack.com/subscribe"]
+  }
+  </script>
+  <!-- @partial:schema-org:end -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://kylixai.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://kylixai.com/services.html"},
+      {"@type": "ListItem", "position": 3, "name": "Consulting", "item": "https://kylixai.com/services-consulting.html"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Consulting",
+    "serviceType": "Strategic AI Consulting, Training, and Coaching",
+    "provider": { "@id": "https://kylixai.com/#organization" },
+    "areaServed": "US",
+    "description": "Strategic consulting, AI training, and hands-on coaching. Expert guidance, when you need it.",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Consulting Options",
+      "itemListElement": [
+        {"@type": "Offer", "price": "350", "priceCurrency": "USD", "itemOffered": {"@type": "Service", "name": "Hourly Consulting"}, "priceSpecification": {"@type": "UnitPriceSpecification", "price": "350", "priceCurrency": "USD", "unitText": "HOUR"}},
+        {"@type": "Offer", "price": "500", "priceCurrency": "USD", "itemOffered": {"@type": "Service", "name": "Coaching"}, "priceSpecification": {"@type": "UnitPriceSpecification", "price": "500", "priceCurrency": "USD", "unitText": "MONTH"}},
+        {"@type": "Offer", "price": "250", "priceCurrency": "USD", "itemOffered": {"@type": "Service", "name": "Training"}, "priceSpecification": {"@type": "UnitPriceSpecification", "price": "250", "priceCurrency": "USD", "unitText": "SESSION"}}
+      ]
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "Who is this consulting for?", "acceptedAnswer": {"@type": "Answer", "text": "Founders building their first product, executives scaling engineering teams, startups preparing for launch or funding, and teams entering AI or blockchain. The common thread is leaders who need senior expertise without committing to a full-time hire."}},
+      {"@type": "Question", "name": "What is the difference between hourly consulting, coaching, and training?", "acceptedAnswer": {"@type": "Answer", "text": "Hourly consulting ($350/hr) is on-demand strategy — architecture reviews, audits, second opinions. Coaching ($500/mo) is ongoing guidance with 2 monthly sessions and async support between them. Training (from $250/session) is a structured workshop for you or your team on tools like Claude Code, Cursor, n8n, and prompting fundamentals."}},
+      {"@type": "Question", "name": "Do you offer fractional CTO or fractional PM engagements?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. For longer strategic engagements we embed as a fractional product or engineering leader: roadmap ownership, stakeholder alignment, team building, and shipping. Scope and pricing are custom to your team and goals. Most fractional engagements run 3 to 6 months."}},
+      {"@type": "Question", "name": "Can you help with AI adoption inside an existing team?", "acceptedAnswer": {"@type": "Answer", "text": "That is most of what we do. We audit current workflows, identify where AI actually moves the needle (and where it does not), and run hands-on training so your team can use the tools confidently. Then we stay on to help operationalize what works."}},
+      {"@type": "Question", "name": "What is your blockchain and Web3 experience?", "acceptedAnswer": {"@type": "Answer", "text": "We've shipped production blockchain forensics work and advised teams on Web3 architecture, security, and go-to-market. If your project involves smart contract integration, on-chain analytics, or evaluating a Web3 stack, that is in scope."}},
+      {"@type": "Question", "name": "Do you sign NDAs before discovery?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, happy to. Send yours over, or use ours. We treat every conversation as confidential by default whether paperwork is signed or not."}},
+      {"@type": "Question", "name": "How do I know if I need consulting or a full build?", "acceptedAnswer": {"@type": "Answer", "text": "Book a free 30-minute call. We will talk through your situation and tell you honestly. If you need a build, we have a development team. If you need strategy first, that is what consulting is for. If neither is the right fit, we will say so."}}
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">

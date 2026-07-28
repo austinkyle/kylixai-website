@@ -77,6 +77,19 @@ No exceptions — this is the full quality bar for v1 launch.
 
 ---
 
+## AEO / Structured Data
+
+- [ ] Every page's JSON-LD validates with no errors (Google Rich Results Test / schema.org validator)
+- [ ] Every `Organization` schema block is identical across all 8 pages (hand-sync check via `@partial:schema-org` markers)
+- [ ] Every `FAQPage` question/answer string matches its page's visible `<details>` text exactly
+- [ ] `llms.txt` reachable at https://kylixai.com/llms.txt and lists all 8 pages
+- [ ] sitemap.xml lists all 8 pages, not just the homepage
+- [ ] robots.txt explicitly allows GPTBot, ChatGPT-User, ClaudeBot, anthropic-ai, PerplexityBot, Google-Extended, CCBot, Bingbot
+- [ ] `og:site_name` and `meta name="robots"` present on all 8 pages
+- [ ] Pricing figures are consistent across every page and schema block that states them (flag and resolve any conflicts before launch — see `deploy/seo/seo-config-v1.1.md` "Known issue")
+
+---
+
 ## Deployment
 
 - [ ] Site live at https://kylixai.com (not just *.pages.dev)

@@ -57,7 +57,8 @@
 | First Cloudflare Pages deployment | `cloudflare/deploy-cloudflare-v*.md` (full doc) | All `design/`, all `content/`, all `build/` | None |
 | Connect kylixai.com custom domain + DNS | `cloudflare/deploy-cloudflare-v*.md` (DNS section) | All `design/`, all `content/`, all `build/` | None |
 | Configure Web3Forms lead capture | `forms/forms-web3forms-v*.md`, `.env.example` (for key name) | All `design/`, all `content/`, all `build/`, `deploy/cloudflare/` | None |
-| Write / update SEO meta + Open Graph | `seo/seo-config-v*.md`, `build/src/index.html` | All `design/`, all `content/drafts/`, `deploy/cloudflare/`, `deploy/forms/` | None |
+| Write / update SEO meta + Open Graph | `seo/seo-config-v*.md`, `build/src/*.html` (all 8 pages) | All `design/`, all `content/drafts/`, `deploy/cloudflare/`, `deploy/forms/` | None |
+| Add/update structured data (schema.org) or `llms.txt` for AEO | `seo/seo-config-v1.1.md` "Structured Data & AEO" section, `build/src/*.html` (all 8 pages), `build/src/llms.txt` | All `design/`, all `content/drafts/`, `deploy/cloudflare/`, `deploy/forms/` | None |
 | Run pre-launch quality checklist | `checklist/checklist-prelaunch-v*.md`, `build/context.md` (quality bar) | All `design/`, all `content/drafts/` | None |
 | Debug form not delivering submissions | `forms/forms-web3forms-v*.md`, `build/src/index.html` (form HTML) | All `design/`, all `content/`, `deploy/seo/`, `deploy/cloudflare/` | None |
 | Update deployment or re-deploy | `cloudflare/deploy-cloudflare-v*.md` | All `design/`, all `content/`, all `build/` | None |

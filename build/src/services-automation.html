@@ -11,8 +11,10 @@
   <link rel="icon" href="assets/favicon/kylix-favicon-16x16.png" sizes="16x16" type="image/png" />
   <link rel="apple-touch-icon" href="assets/favicon/kylix-favicon-512x512.png" />
 
+  <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://kylixai.com/services-automation.html" />
+  <meta property="og:site_name" content="KylixAI" />
   <meta property="og:title" content="AI & Automation — KylixAI" />
   <meta property="og:description" content="Custom AI agents that handle business operations, outreach, content, research, and more — built end-to-end and deployed into your infrastructure." />
   <meta property="og:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
@@ -20,6 +22,71 @@
   <meta name="twitter:title" content="AI & Automation — KylixAI" />
   <meta name="twitter:description" content="Custom AI agents that handle business operations, outreach, content, research, and more — built end-to-end and deployed into your infrastructure." />
   <meta name="twitter:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
+
+  <!-- @partial:schema-org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kylixai.com/#organization",
+    "name": "KylixAI",
+    "url": "https://kylixai.com/",
+    "logo": "https://kylixai.com/assets/favicon/kylix-favicon-512x512.png",
+    "image": "https://kylixai.com/assets/kylix-og-image-dark-1200x630.png",
+    "description": "KylixAI builds AI agents, automations, and custom software that take the repetitive work off your plate — so your business runs on systems, not just your hours.",
+    "email": "hello@kylixai.com",
+    "sameAs": ["https://austinkyle.substack.com/subscribe"]
+  }
+  </script>
+  <!-- @partial:schema-org:end -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://kylixai.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://kylixai.com/services.html"},
+      {"@type": "ListItem", "position": 3, "name": "AI & Automation", "item": "https://kylixai.com/services-automation.html"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "AI Agent Install",
+    "serviceType": "Custom AI Agent Development and Deployment",
+    "provider": { "@id": "https://kylixai.com/#organization" },
+    "areaServed": "US",
+    "description": "Custom AI agents that handle business operations, outreach, content, research, and more — built end-to-end and deployed into your infrastructure.",
+    "offers": {
+      "@type": "Offer",
+      "price": "10000",
+      "priceCurrency": "USD",
+      "description": "Implementations start around $10k for a focused single-channel agent and scale based on integrations, custom skills, and infrastructure scope."
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "Do you build on a third-party platform, or is this proprietary?", "acceptedAnswer": {"@type": "Answer", "text": "We build every agent from the ground up on our own stack — no white-labeled SaaS wrapper, no reselling someone else's platform. You own your stack. No vendor lock-in, no per-seat pricing surprises, no waiting on a roadmap you cannot influence."}},
+      {"@type": "Question", "name": "How is this different from buying an off-the-shelf chatbot?", "acceptedAnswer": {"@type": "Answer", "text": "Off-the-shelf chatbots are generic. Our agents are trained on your data, integrated with your tools (Slack, Discord, WhatsApp, your CRM, your database), and built around the specific workflows you already run. The result is an agent that handles real work end-to-end, not just answers FAQs."}},
+      {"@type": "Question", "name": "How long does it take to deploy a custom agent?", "acceptedAnswer": {"@type": "Answer", "text": "Most agents go live in 2 to 6 weeks. Simple support or inbox agents are on the faster end. Multi-channel agents with custom skills, integrations, and self-improving feedback loops sit at the longer end. We scope every engagement up front so you know the timeline before we start."}},
+      {"@type": "Question", "name": "Which channels and tools can the agent operate in?", "acceptedAnswer": {"@type": "Answer", "text": "Slack, Discord, WhatsApp, Telegram, Microsoft Teams, iMessage, Signal, Matrix, email, and more — we treat every channel as one unified inbox. For tools, we integrate with whatever your team already uses: HubSpot, Salesforce, Notion, Linear, GitHub, Google Workspace, and most APIs."}},
+      {"@type": "Question", "name": "Do you handle hosting and infrastructure, or do we?", "acceptedAnswer": {"@type": "Answer", "text": "Your choice. We can deploy on our managed infrastructure with monitoring, security hardening, and 24/7 uptime, or we can deploy into your own cloud account if you have data residency or compliance requirements. Either way, you own the deployment."}},
+      {"@type": "Question", "name": "What about data privacy and security?", "acceptedAnswer": {"@type": "Answer", "text": "Customer data never leaves the infrastructure you control. We use enterprise model providers with no-training agreements (Anthropic, OpenAI, Google), secrets are stored in managed key vaults, and every agent ships with audit logging. Happy to sign an NDA before discovery."}},
+      {"@type": "Question", "name": "How much does an agent implementation cost?", "acceptedAnswer": {"@type": "Answer", "text": "Implementations start around $10k for a focused single-channel agent and scale based on integrations, custom skills, and infrastructure scope. Most engagements include a 1-hour training session, 4 custom help guides, and 7 days of post-launch support. Send us a quote request for a fixed price."}},
+      {"@type": "Question", "name": "What happens after launch — do you stick around?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Most clients keep us on a monthly retainer for ongoing skill development, new integrations, performance tuning, and incident response. Agents need care like any other production system; we are happy to be the team that provides it."}}
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
