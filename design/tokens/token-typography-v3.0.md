@@ -1,6 +1,6 @@
 # Typography Tokens v3.0 — Playfair Display × Helvetica Neue
 
-Status: FINAL v3.0 (supersedes v2.0's Playfair + Lora pairing for this rebuild)
+Status: SUPERSEDED by FINAL v4.0 (historical record; v4.0 supersedes this Playfair Display × Helvetica Neue pairing)
 
 Aligns to `design/brand/kylix-thread-logo/BRAND-GUIDE.md`'s actual pairing logic: "Playfair (classical, high-contrast Didone) × Helvetica (Swiss precision) = timeless architecture, engineered systems."
 

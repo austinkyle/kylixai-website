@@ -21,8 +21,8 @@
 (function () {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const ACCENT = '255,79,31';
-  const BRONZE = '168,118,62';
+  const ACCENT = '18,72,76';
+  const BRONZE = '43,117,116';
 
   /* Render the field below display resolution — it is soft by design, and
      the upscale is invisible while the fill cost roughly halves. */
