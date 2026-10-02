@@ -9,9 +9,9 @@ Business understanding is Kylix's primary advantage. Process engineering follows
 ## Services
 
 - [Services: Diagnose, Build & Operate](https://kylixai.com/services): The commercial path from a free fit call through diagnosis, implementation and ongoing systems management.
-- [Systems Opportunity Audit](https://kylixai.com/systems-opportunity-audit): A $199 launch-price business and process diagnostic that delivers a Kylix Systems Roadmap. The full fee is credited toward implementation; it is refunded if no meaningful opportunity is identified; clients keep the roadmap either way.
-- [Build & Implementation](https://kylixai.com/build-and-implementation): Business systems design, implementation, integration, testing, deployment and documentation. Starting around $2,500; actual pricing depends on scope.
-- [Systems Management](https://kylixai.com/systems-management): Ongoing operation and improvement of deployed business infrastructure. Starting around $500/month; responsibilities are scoped together.
+- [Systems Opportunity Audit](https://kylixai.com/systems-opportunity-audit): A diagnostic engagement that maps how the business operates, identifies high-value opportunities and produces a prioritized Kylix Systems Roadmap. The audit investment is credited in full toward implementation; if no meaningful opportunity is identified, the audit is fully refunded; clients keep the roadmap if they do not proceed.
+- [Build & Implementation](https://kylixai.com/build-and-implementation): Business systems design, implementation, integration, testing, deployment and documentation. Implementation is scoped and priced based on the opportunities identified during the Systems Opportunity Audit.
+- [Systems Management](https://kylixai.com/systems-management): Ongoing operation and improvement of deployed business infrastructure, scoped around the systems Kylix operates and the monitoring, maintenance, optimization and support required.
 
 ## Pages
 

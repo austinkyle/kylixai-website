@@ -8,9 +8,9 @@ The deployable files are in `build/src/`; the site uses hand-authored HTML, CSS 
 
 - `/` — business-first homepage
 - `/services` — Diagnose, Build & Operate overview
-- `/systems-opportunity-audit` — $199 launch-price diagnostic and Kylix Systems Roadmap
-- `/build-and-implementation` — business systems implementation; starting around $2,500, scoped by project
-- `/systems-management` — operation and improvement; starting around $500/month, scope agreed together
+- `/systems-opportunity-audit` — diagnostic engagement and prioritized Kylix Systems Roadmap
+- `/build-and-implementation` — business systems implementation, scoped and priced based on audit findings
+- `/systems-management` — operation and improvement, scoped around operated systems and required support
 - `/about` — business understanding behind the work
 - `/apps` — Our Work: inspectable project repositories and demos
 - `/resources` — newsletter and social destinations
