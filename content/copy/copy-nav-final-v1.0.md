@@ -1,27 +1,15 @@
-# Nav & Footer Copy — Final v1.0
+# KylixAI Navigation & Footer — Current Approved Direction
 
-## Nav (shared across all 5 pages)
+## Navigation
 
-- Wordmark: KYLIX AI (Thread logo, dark variant)
-- Services (dropdown: AI Coaching · Custom AI Build · Managed AI Agent · Training — each anchors to `/services.html#tier-slug`)
-- Apps
-- Resources
-- About
-- CTA pill: "Book a Call" → external, `https://calendly.com/austin-kyle/meeting`, opens new tab
+- Services: dropdown to Systems Opportunity Audit, Build & Implementation, and Systems Management.
+- Our Work (`/apps`), Resources (`/resources`), About (`/about`).
+- Primary CTA: “Book a Free Fit Call” → `https://calendly.com/austin-kyle/meeting`, opens in a new tab.
 
-## Footer (shared)
+## Footer
 
-**Brand column**
-- KYLIX AI wordmark
-- "We build AI agents, custom automations, and systems that run your business — so you can focus on growing it."
-- Social: "Follow us on LinkedIn" (placeholder href — update when profile exists)
-
-**Quick Links**
-- Home · Services · Apps · Resources · About · Book a Call
-
-**Newsletter** (visual only for now — no backend wired yet)
-- Heading: "The Signal"
-- Body: "Occasional notes on AI, automation, and what's actually worth adopting. No spam."
-- Email input + Subscribe button (placeholder, TODO: wire to a mailing list provider)
-
-Copyright: "© 2026 KylixAI. All rights reserved."
+- KylixAI thread wordmark.
+- Supporting phrase: “Business first. Process second. Technology third.”
+- Quick links: Services, Systems Opportunity Audit, Build & Implementation, Systems Management, Our Work, Resources, About.
+- The Signal newsletter links to the existing Substack destination; do not imply an on-site signup form.
+- Public contact: `hello@kylixai.com`.

@@ -1277,31 +1277,6 @@ body.nav-locked { overflow: hidden; }
 .form__status--error { color: var(--color-error); }
 
 
-/* ─── 15e. TESTIMONIAL ───────────────────────────────────────────── */
-
-.testimonial {
-  max-width: 720px;
-  margin: var(--space-8) auto 0;
-  background: var(--color-content-card);
-  border-radius: var(--radius-lg);
-  padding: var(--space-7);
-  box-shadow: var(--shadow-light-soft);
-  text-align: center;
-}
-.testimonial__quote {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-style: italic;
-  line-height: var(--leading-snug);
-}
-.testimonial__attribution {
-  margin-top: var(--space-5);
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-.testimonial__attribution strong { color: var(--color-text-on-light); font-weight: 600; }
-
-
 /* ─── 15f. CREATOR CARDS (Resources) ─────────────────────────────── */
 
 .creator-card {
@@ -1407,3 +1382,44 @@ body.nav-locked { overflow: hidden; }
   .hero__field { display: none !important; }
   .step::before { transform: scaleY(1) !important; transition: none !important; }
 }
+
+/* Business-first page content, using the existing Kylix layout and palette. */
+.hero__inner { max-width: 960px; }
+.hero__headline { max-width: 15ch; text-wrap: balance; }
+.hero__sub { max-width: 68ch; }
+.hero__principle { margin-top: var(--space-5); font: 500 var(--text-xs)/1.5 var(--font-mono); letter-spacing: var(--tracking-wide); color: var(--color-text-on-dark); }
+.section--dark .eyebrow,
+.section--dark .cta-band__eyebrow,
+.section--dark .step__number,
+.section--dark .card__number,
+.section--dark .card__link { color: var(--color-text-on-dark); }
+.section--dark .step__number { background: var(--color-surface-raised); }
+.section--dark .card { color: var(--color-text-on-dark); }
+.section--dark .card__body { color: rgba(248,247,245,.78); }
+.section--dark .step__body,
+.section--dark .faq__body,
+.footer__tagline,
+.footer__col-title,
+.footer__bottom { color: rgba(248,247,245,.78); }
+.founder-copy { display: grid; grid-template-columns: minmax(180px, 300px) minmax(0, 1fr); gap: var(--space-7); align-items: center; max-width: 900px; }
+.founder-copy img { display: block; width: 100%; max-height: 360px; object-fit: cover; object-position: center 25%; border-radius: var(--radius-md); }
+.founder-copy p { max-width: 64ch; }
+.hero__actions { flex-wrap: wrap; }
+.form__botcheck { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 640px) {
+  .hero__headline { max-width: 12ch; font-size: clamp(2.4rem, 12vw, 4rem); }
+  .founder-copy { grid-template-columns: 1fr; gap: var(--space-5); }
+  .founder-copy img { max-width: 260px; }
+}
+
+/* Keep interactive text legible against the dark ink surfaces. */
+.section--dark .card { background: var(--color-surface-raised); box-shadow: var(--shadow-dark-soft); }
+.section--dark .card__number { background: var(--color-surface-base); }
+.nav__link[aria-current="page"],
+.nav__dropdown-link:hover,
+.footer__links a:hover { color: var(--color-bronze-light); }
+.btn--outline-light:hover { border-color: var(--color-bronze-light); color: var(--color-text-on-dark); }
+:focus-visible { outline: 3px solid var(--color-bronze); outline-offset: 3px; }
+.section--dark :focus-visible,
+.nav :focus-visible,
+.footer :focus-visible { outline-color: var(--color-text-on-dark); }

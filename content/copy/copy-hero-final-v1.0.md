@@ -1,42 +1,12 @@
-# copy-hero-final-v1.0.md — The Hook (Hero Section)
+# KylixAI Homepage Hero — Current Approved Direction
 
-**Status**: FINAL v1.0
-**Arc position**: #1 — The Hook
-**Approved**: yes
+Status: approved positioning for the current static site.
 
----
+- Eyebrow: Business systems & process engineering
+- H1: We understand the business before we build the AI.
+- Supporting copy: We study how your business actually works, find where time, money and opportunities are being lost, and build the right system to address it—with software, AI and human judgment where each belongs.
+- Primary CTA: Book a Free Fit Call
+- Secondary CTA: See How We Work
+- Supporting phrase: Business first. Process second. Technology third.
 
-## Badge / eyebrow
-
-```
-Free audit — zero risk
-```
-
-## Hero headline
-
-```
-Your business should
-run without you.
-```
-
-_Note for build: wrap in an `<h1>`. The line break falls between "should" and "run" —
-use `<br>` or natural line-wrapping at --text-hero size. SplitText animates word by word._
-
-## Hero subheadline
-
-```
-You built something real. But somewhere along the way, it started running you.
-The admin, the follow-ups, the tasks you've done a hundred times — it doesn't have to be this way.
-```
-
-## Primary CTA button
-
-```
-Book my free audit
-```
-
-## Below-CTA reassurance micro-copy
-
-```
-No cost until it's working. No obligation, ever.
-```
+Keep the existing hero composition, thread canvas, type, and responsive behavior. Business understanding leads; AI is one possible execution tool.

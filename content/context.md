@@ -8,49 +8,25 @@
 
 ## The Reader
 
-**Who they are**: Small-business owners and founders. Started their business dreaming of freedom.
-Instead became a slave to it. Calendar full. Repetitive work endless. Original dream faded.
-Successful on paper, trapped in practice. Likely reading on a phone.
+Business leaders who notice repetitive handoffs, missed follow-up, disconnected information, slow reporting, operational bottlenecks or constrained capacity. They need a credible diagnosis grounded in how their business actually works.
 
-**What they need to feel within 3 seconds**: "This page gets me." Then: "Oh — there's a way out."
+## Language rules
 
-**Language rules**:
-- Simple, human. Speak like a trusted friend who runs a business, not a consultant.
-- Never explain AI technology. Explain the freedom.
-- Zero jargon: no "workflow automation solutions", no "AI-powered ecosystem".
-- Lead with the dream outcome. Follow with the pain. End with the invitation.
-- Automation should feel like a natural answer to their pain — not a product being sold.
+- Lead with business understanding; process engineering follows, then technology.
+- Use concise plain English and respect the reader’s attention.
+- Explain business problems before technology. Recommend software, AI/model support and human review according to the task and cost of error.
+- Avoid AI hype, generic consulting language, unverified credentials, invented metrics, ROI, clients, testimonials or guarantees.
 
----
+## Homepage hierarchy
 
-## Hormozi Narrative Arc (copy must follow this structure)
-
-```
-1. THE HOOK          → Dream outcome + the quiet pain. Make them feel seen immediately.
-                        "What would your business look like if it ran itself?"
-
-2. THE RECOGNITION   → Name specific pains in their language. "That's exactly me."
-                        Examples: chasing invoices, re-explaining tasks, scheduling back-and-forth,
-                        copy-pasting data, following up manually, doing the same thing for the 100th time.
-
-3. THE REFRAME       → It doesn't have to be this way. The business CAN run without consuming them.
-                        Hope enters. Shift from "this is just how it is" to "wait — that's fixable."
-
-4. HOW IT WORKS      → The free audit. Three clear steps:
-                        (1) We audit — find exactly what's costing the most time and money.
-                        (2) We show you the numbers — exact hours/dollars reclaimed.
-                        (3) We build it. You pay nothing until it's working and saving you money.
-
-5. THE PROOF         → Placeholder for testimonials + case studies. For launch:
-                        → Founder credibility: 20 years entrepreneurial experience, B2B local businesses.
-                        → "Coming soon" that feels intentional, not empty.
-
-6. THE INVITATION    → Warm, low-friction, singular CTA: Book a free audit.
-                        Make reaching out feel like their own idea, not a sales pressure.
-                        No "limited spots" urgency gimmicks. Just warmth and confidence.
-```
-
----
+1. Business-first hero.
+2. Differentiation led by business understanding.
+3. Observe → Route → Design for Failure → Verify → Measure.
+4. Free Fit Call → Systems Opportunity Audit → Build & Implementation → Systems Management.
+5. Business outcomes without invented numbers.
+6. Concise founder rationale.
+7. Inspectable repositories/demos with evidence status made clear.
+8. FAQs and free fit-call invitation.
 
 ## Content Pipeline
 

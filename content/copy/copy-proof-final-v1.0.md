@@ -1,50 +1,10 @@
-# copy-proof-final-v1.0.md — Proof & Trust
+# KylixAI Proof — Current Approved Direction
 
-**Status**: FINAL v1.0
-**Arc position**: #5 — The Proof
-**Approved**: yes
+Use demonstrable work, with its status stated accurately. Do not use invented or unsupported testimonials, client names, customer brands, deployment claims, or business outcomes.
 
----
+## Systems you can inspect
 
-## Section heading
+- **Conduit OS** — repository project; describe the system and engineering choices visible in its project data.
+- **AI Executive Daily Brief** — repository project with an inspectable demo mode; describe the data and system choices accurately.
 
-```
-Why trust us?
-```
-
----
-
-## Founder credibility block
-
-```
-I've spent over 20 years building and running businesses — not advising on them from the outside.
-I know what it feels like to be the first one in and the last one out. To be indispensable
-in a way that feels more like a trap than a compliment.
-
-KylixAI exists because I built automation systems for my own businesses and then realised
-other owners needed the same thing. Not a software product. Not a subscription. Just someone
-who comes in, finds what's broken, and fixes it — with skin in the game.
-
-— Austin Kyle, Founder
-```
-
----
-
-## Testimonial placeholder
-
-**Card text:**
-```
-We're working with our first clients right now.
-If you'd like to be among them — and help shape what we build — this is your moment.
-```
-
-**Sub-label beneath card:**
-```
-Results coming soon.
-```
-
----
-
-## Trust signals
-
-_No press/logos available at launch. Omit this block at v1. Add when available._
+These examples demonstrate project work. They do not establish client deployment, adoption, or measured commercial results.

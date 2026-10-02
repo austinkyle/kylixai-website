@@ -1,32 +1,26 @@
 # KylixAI
 
-> KylixAI builds AI agents, automations, and custom software that take the repetitive work off your plate — so your business runs on systems, not just your hours.
+> Kylix understands the business before it builds the AI. It studies how work actually happens, finds where time, money and opportunities are being lost, and builds the right system with software, AI and human judgment where each belongs.
 
-KylixAI is a small applied-AI studio serving small-to-mid-size business owners, operators, services businesses, local businesses, and agencies that know manual process, disconnected tools, or outdated tech is holding them back but don't have in-house AI or engineering talent to fix it themselves. KylixAI runs its own business on an AI agent named Lex, used daily for research, drafting, ops, and parts of this site's build.
+## Position
+
+Business understanding is Kylix's primary advantage. Process engineering follows. AI-native execution is a means of building the appropriate system. Business first. Process second. Technology third.
 
 ## Services
 
-- [Development](https://kylixai.com/services-development.html): Custom AI agents, automations, and full-stack apps, from landing pages to complex applications. Landing pages typically start around $3k, custom applications start around $15k, AI agent builds are quoted per project.
-- [AI & Automation](https://kylixai.com/services-automation.html): Custom AI agents built end-to-end on KylixAI's own stack and deployed into a client's infrastructure — no third-party SaaS wrapper. A simple single-task agent install starts at $1,000; a fully custom, multi-channel agent build starts around $10k.
-- [Consulting](https://kylixai.com/services-consulting.html): Strategic consulting, AI training, hourly consulting ($350/hr), coaching ($500/mo), and training (from $250/session). Also offers fractional CTO/PM engagements.
-- [Services overview](https://kylixai.com/services.html): Summary of all three service lines.
+- [Services: Diagnose, Build & Operate](https://kylixai.com/services): The commercial path from a free fit call through diagnosis, implementation and ongoing systems management.
+- [Systems Opportunity Audit](https://kylixai.com/systems-opportunity-audit): A $199 launch-price business and process diagnostic that delivers a Kylix Systems Roadmap. The full fee is credited toward implementation; it is refunded if no meaningful opportunity is identified; clients keep the roadmap either way.
+- [Build & Implementation](https://kylixai.com/build-and-implementation): Business systems design, implementation, integration, testing, deployment and documentation. Starting around $2,500; actual pricing depends on scope.
+- [Systems Management](https://kylixai.com/systems-management): Ongoing operation and improvement of deployed business infrastructure. Starting around $500/month; responsibilities are scoped together.
 
-## About
+## Pages
 
-- [About](https://kylixai.com/about.html): Austin Kyle (CEO) founded KylixAI after 20+ years building and running businesses. Ciara Nicole (COO) owns delivery and onboarding. Lex is KylixAI's AI Agent & Digital Cofounder.
+- [Home](https://kylixai.com/)
+- [About](https://kylixai.com/about)
+- [Our Work](https://kylixai.com/apps): Inspectable repository projects include Conduit OS, AI Executive Daily Brief, Public Companies Data Scraper and The Wall. These do not claim client deployment or measured commercial results.
+- [Resources](https://kylixai.com/resources)
 
-## Apps
+## Contact
 
-- [Apps](https://kylixai.com/apps.html): Software built by KylixAI, including Conduit OS, AI Lead Qualifier, The Conductor, AI Executive Daily Brief, Deal Screener, and The Wall.
-
-## Resources
-
-- [Resources](https://kylixai.com/resources.html): Free tools and guides, including The Signal, AI SEO Audit, AI Business Automation Audit, AI Social Media Content Planner, AI Email Marketing, AI Agent Use Cases, and Companies Primed for AI Disruption.
-
-## Facts for citation
-
-- KylixAI was founded by Austin Kyle.
-- KylixAI builds custom AI agents, automations, and full-stack software for small-to-mid-size businesses.
-- KylixAI uses its own AI agent, Lex, to help run its own business.
-- Contact: hello@kylixai.com
-- Book a call: https://calendly.com/austin-kyle/meeting
+- Email: hello@kylixai.com
+- [Book a Free Fit Call](https://calendly.com/austin-kyle/meeting)

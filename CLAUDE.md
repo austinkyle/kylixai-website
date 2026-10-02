@@ -57,6 +57,32 @@ Richer custom illustration work is deferred to v2 — documented in `design/bran
 
 ---
 
+## Commands
+
+No package manager, no bundler, no test suite, no linter — this is a hand-authored static site.
+
+- **Local dev server** (required — don't just open the HTML file, Google Fonts and Three.js `import()` need real HTTP):
+  `cd build/src && python3 -m http.server 8000` → http://localhost:8000
+- **Sync shared nav/footer across all 8 pages** after editing a partial:
+  `node build/sync-partials.mjs`
+  Edits go in `build/src/_partials/{nav,footer}.html`, never inside the `<!-- @partial:nav -->…:end -->` / `<!-- @partial:footer -->…:end -->` blocks in individual pages — those are overwritten on next sync.
+- **`build.sh` is not a build step.** It's a one-time idempotent scaffold generator (`write_file` skips any path that already exists) — running it again is safe but does nothing once the tree is populated. Don't run it expecting it to compile or bundle anything.
+- **`deploy-build.sh`** is the configured Cloudflare Pages build: it copies `build/src/` → `dist/` and substitutes `__WEB3FORMS_KEY__` / `__CALENDAR_URL__` placeholders from `WEB3FORMS_ACCESS_KEY` / `CALENDAR_BOOKING_URL`. Production Pages project `kylixai-website` is linked to GitHub, deploys branch `master`, runs `bash deploy-build.sh`, and serves `dist/` (verified in Pages configuration on 2026-10-01). Check for matching placeholders before assuming substitution changes a page.
+
+---
+
+## Architecture — `build/src/` (the actual deployed site)
+
+- **8 static pages, no templating engine**: `index`, `about`, `apps`, `resources`, `services`, `systems-opportunity-audit`, `build-and-implementation`, `systems-management`. Legacy service slugs permanently redirect through `build/src/_redirects`.
+- **Nav/footer are sync'd, not templated at request time.** `build/sync-partials.mjs` injects `_partials/nav.html` and `_partials/footer.html` into every page between marker comments. This is the only mechanism keeping 8 pages of duplicated markup consistent — always edit the partial + re-run sync, never hand-edit the markers in a single page.
+- **Organization JSON-LD is page-local.** Each page has one valid Organization block; update canonical and social metadata alongside it when a page changes.
+- **`main.css`** is the single stylesheet and the live source of truth for design tokens (colors, type scale, shadows) as CSS custom properties in `:root` — this supersedes the historical snapshots in `design/tokens/token-*-v*.md`, which record how the system evolved, not its current values.
+- **`main.js`** holds page-load GSAP orchestration: mobile nav, magnetic CTA hover, scroll-triggered reveals, and the Web3Forms submit handler — all gated behind `prefers-reduced-motion`.
+- **`thread-field.js`** is a standalone canvas module implementing "The Living Thread field" — pointer/tilt-reactive filament animation, the site's signature motion system. It boots itself and appears at reduced intensity on every page's dark intro band.
+- **Lead capture has no captcha wired in**, despite `README.md`/`PRODUCT.md` describing hCaptcha gating: `services.html`'s inquiry form posts to Web3Forms with native required/email validation, consent, and the existing `botcheck` honeypot. Do not submit real inquiries during testing.
+
+---
+
 ## Build Order (enforce this sequence — do not skip steps)
 
 1. **Read** the frontend-design skill — internalize the quality bar before touching anything

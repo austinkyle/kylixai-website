@@ -1,139 +1,29 @@
-# seo-config-v1.1.md — SEO, Open Graph, Structured Data & AEO Setup
+# KylixAI SEO & Metadata — Current Site Contract
 
-> Supersedes `seo-config-v1.0.md`. Changes: fixed stale tagline/OG example, replaced single-page sitemap example with the real 8-page sitemap, added the Structured Data & AEO section below.
+The public site is a static Cloudflare Pages site in `build/src/`. Keep metadata and sitemap URLs on clean paths without `.html` extensions. Do not deploy as part of local content or metadata work unless separately authorized.
 
----
+## Page titles
 
-## Meta Tags Template (live pattern, all 8 pages)
+- `/`: Business Systems & Process Engineering — KylixAI
+- `/services`: Diagnose, Build & Operate — KylixAI
+- `/systems-opportunity-audit`: Systems Opportunity Audit — KylixAI
+- `/build-and-implementation`: Build & Implementation — KylixAI
+- `/systems-management`: Systems Management — KylixAI
+- `/about`: Business Understanding Behind the Build — KylixAI
+- `/apps`: Business Systems We’ve Built — KylixAI
+- `/resources`: Business Systems & AI Resources — KylixAI
 
-```html
-<!-- Primary Meta Tags -->
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="[page-specific description]" />
-<meta name="robots" content="index, follow" />
+The homepage description is: “KylixAI studies how your business works, identifies operational bottlenecks, and builds the right mix of software, AI and human workflows.” Keep descriptions concise and synchronized across standard, Open Graph and Twitter metadata.
 
-<!-- Canonical URL -->
-<link rel="canonical" href="https://kylixai.com/[page].html" />
+## Structured data and routing
 
-<!-- Favicon -->
-<link rel="icon" href="assets/favicon/kylix-favicon-32x32.png" sizes="32x32" type="image/png" />
-<link rel="icon" href="assets/favicon/kylix-favicon-16x16.png" sizes="16x16" type="image/png" />
-<link rel="apple-touch-icon" href="assets/favicon/kylix-favicon-512x512.png" />
+Each of the eight pages has one valid Organization JSON-LD block. Do not include unverified Person schema, fixed Offer prices for approximate Build or Management rates, unsupported service guarantees, or FAQPage data that differs from visible FAQ copy.
 
-<!-- Open Graph -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://kylixai.com/[page].html" />
-<meta property="og:site_name" content="KylixAI" />
-<meta property="og:title" content="[Page Title] — KylixAI" />
-<meta property="og:description" content="[page-specific description]" />
-<meta property="og:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
+The static `_redirects` file maps legacy `/services-consulting`, `/services-development` and `/services-automation` routes (including `.html` and trailing-slash variants) to the current Systems Opportunity Audit, Build & Implementation and Systems Management paths. `sitemap.xml` lists only the eight canonical pages. `llms.txt` reflects the same positioning, offers and project evidence boundaries.
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="[Page Title] — KylixAI" />
-<meta name="twitter:description" content="[page-specific description]" />
-<meta name="twitter:image" content="https://kylixai.com/assets/kylix-og-image-dark-1200x630.png" />
+## Local checks
 
-<title>[Page Title] — KylixAI</title>
-```
-
-Current live tagline is **"Applied AI for modern business"** (index.html) — the old "KylixAI — Get Your Business Back" example in v1.0 was stale and never matched the shipped copy.
-
----
-
-## robots.txt
-
-Live at `build/src/robots.txt`. Wildcard allow, plus explicit named allows for AI crawlers (belt-and-suspenders — the wildcard already permits them, but naming them signals intent to AEO/LLM crawlers specifically):
-
-```
-User-agent: *
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-Sitemap: https://kylixai.com/sitemap.xml
-```
-
----
-
-## sitemap.xml
-
-Live at `build/src/sitemap.xml`, all 8 pages:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://kylixai.com/</loc><priority>1.0</priority></url>
-  <url><loc>https://kylixai.com/services.html</loc><priority>0.8</priority></url>
-  <url><loc>https://kylixai.com/services-development.html</loc><priority>0.8</priority></url>
-  <url><loc>https://kylixai.com/services-automation.html</loc><priority>0.8</priority></url>
-  <url><loc>https://kylixai.com/services-consulting.html</loc><priority>0.8</priority></url>
-  <url><loc>https://kylixai.com/about.html</loc><priority>0.6</priority></url>
-  <url><loc>https://kylixai.com/apps.html</loc><priority>0.6</priority></url>
-  <url><loc>https://kylixai.com/resources.html</loc><priority>0.6</priority></url>
-</urlset>
-```
-
-(Each entry also carries `<lastmod>` and `<changefreq>monthly</changefreq>` in the live file — omitted above for brevity.)
-
----
-
-## Structured Data & AEO
-
-Added in this pass to make the site citable by LLM answer engines (ChatGPT, Claude, Perplexity, Gemini), not just crawlable by search engines.
-
-**Schema types in use (JSON-LD, all in `<head>`):**
-
-| Page(s) | Schema types |
-|---|---|
-| All 8 pages | `Organization` (shared block, hand-synced — marked with `<!-- @partial:schema-org -->` / `<!-- @partial:schema-org:end -->` comments, same convention as `@partial:nav`) |
-| index.html | + `WebSite`, `FAQPage` (4 Q&As) |
-| about.html | + `Person` × 2 (Austin Kyle, Ciara Nicole), `FAQPage` (4 Q&As) |
-| services.html | + `BreadcrumbList`, `Service` with `OfferCatalog` linking to the 3 sub-services |
-| services-development.html | + `BreadcrumbList`, `Service` with `AggregateOffer` ($3k–$15k+), `FAQPage` (7 Q&As) |
-| services-consulting.html | + `BreadcrumbList`, `Service` with `OfferCatalog` (hourly $350, coaching $500/mo, training $250/session), `FAQPage` (7 Q&As) |
-| services-automation.html | + `BreadcrumbList`, `Service` with `AggregateOffer` ($1k–$10k, two tiers), `FAQPage` (7 Q&As) |
-| apps.html, resources.html | Organization schema only — no `SoftwareApplication`/`ItemList` schema yet (deferred; would need re-verified per-app details first) |
-
-**Rule enforced throughout:** every `FAQPage` question/answer string is copied verbatim from the page's own visible `<details>` markup — structured data must match on-page text exactly, or it actively hurts trust with answer engines instead of helping.
-
-**Resolved:** `services.html`'s "Starting at $1,000" and `services-automation.html`'s "$10k" were originally two contradictory numbers for the same offering. Reconciled as two explicit tiers — a $1,000 single-task agent install and a $10k+ fully custom multi-channel build — with matching copy and an `AggregateOffer` (lowPrice $1,000 / highPrice $10,000) on `services-automation.html`, and a clarifying bullet on `services.html`'s pricing card pointing to the higher tier.
-
-**llms.txt:** live at `build/src/llms.txt` — the emerging llms.txt convention (llmstxt.org-style). H1 site name, one-line summary, linked sections for Services/About/Apps/Resources, and a short "facts for citation" list. Sourced only from already-established copy, no new claims.
-
----
-
-## Verification Steps
-
-- [ ] Open Graph preview: paste URL at opengraph.xyz
-- [ ] Favicon visible in browser tab (Chrome, Safari, Firefox)
-- [ ] robots.txt accessible at https://kylixai.com/robots.txt
-- [ ] sitemap.xml accessible at https://kylixai.com/sitemap.xml, lists all 8 pages
-- [ ] llms.txt accessible at https://kylixai.com/llms.txt
-- [ ] Every JSON-LD block validates in Google's Rich Results Test / schema.org validator
-- [ ] Every FAQPage question/answer string matches its page's visible `<details>` text exactly
-- [ ] Submit sitemap to Google Search Console
-- [ ] Description under 160 characters
+- Parse every `application/ld+json` block as JSON.
+- Confirm one H1 per page, canonical/OG/Twitter consistency, and eight sitemap entries.
+- Check internal links and legacy redirects.
+- Confirm local work only; production deployment is a separate release decision.
