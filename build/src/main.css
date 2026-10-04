@@ -1388,6 +1388,8 @@ body.nav-locked { overflow: hidden; }
 .hero__headline { max-width: 15ch; text-wrap: balance; }
 .hero__sub { max-width: 68ch; }
 .hero__principle { margin-top: var(--space-5); font: 500 var(--text-xs)/1.5 var(--font-mono); letter-spacing: var(--tracking-wide); color: var(--color-text-on-dark); }
+.hero__actions:has(.btn + .btn) { gap: var(--space-5); }
+.hero__actions:has(.btn + .btn) + .hero__principle { margin-top: var(--space-7); }
 .section--dark .eyebrow,
 .section--dark .cta-band__eyebrow,
 .section--dark .step__number,
