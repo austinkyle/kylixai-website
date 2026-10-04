@@ -505,7 +505,7 @@ body.nav-locked { overflow: hidden; }
   margin-top: var(--space-5);
 }
 
-.hero__actions { margin-top: var(--space-7); }
+.hero__actions { display: flex; align-items: center; gap: var(--space-4); margin-top: var(--space-7); }
 
 .hero__scroll-cue {
   position: absolute;
